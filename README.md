@@ -1,10 +1,15 @@
 # Tugas Praktikum Minggu 1 PAM 
 > replace helo, platform name with our self identity
+---
 ## Identity
 Name : Varasina Farmadani  
 NIM  : 123140107
 ## Screenshot
 ![app running](screenshoot/SS01.png)
+## References
+[PAM-01](https://kuliah2.itera.ac.id/pluginfile.php/63171/mod_resource/content/2/Materi_01_Pengenalan_MK_dan_Setup_Environment.pdf)
+
+---
 
 This is a Kotlin Multiplatform project targeting Android.
 
