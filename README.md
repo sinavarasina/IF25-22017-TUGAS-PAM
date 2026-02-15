@@ -4,7 +4,7 @@
 Name : Varasina Farmadani  
 NIM  : 123140107
 ## Screenshot
-[app running](screenshoot/SS01.png)
+![app running](screenshoot/SS01.png)
 
 This is a Kotlin Multiplatform project targeting Android.
 
