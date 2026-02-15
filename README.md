@@ -1,3 +1,11 @@
+# Tugas Praktikum Minggu 1 PAM 
+> replace helo, platform name with our self identity
+## Identity
+Name : Varasina Farmadani  
+NIM  : 123140107
+## Screenshot
+[app running](sreenshot/SS01.png)
+
 This is a Kotlin Multiplatform project targeting Android.
 
 * [/composeApp](./composeApp/src) is for code that will be shared across your Compose Multiplatform applications.
