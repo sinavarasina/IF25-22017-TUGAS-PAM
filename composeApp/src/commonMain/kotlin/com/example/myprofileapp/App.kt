@@ -23,7 +23,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -34,9 +38,6 @@ import com.example.myprofileapp.ui.components.profile.InfoItem
 import com.example.myprofileapp.ui.components.profile.ProfileCard
 import com.example.myprofileapp.ui.components.profile.ProfileHeader
 import com.example.myprofileapp.ui.style.colorscheme.CatppuccinMocha
-
-import myprofileapp.composeapp.generated.resources.Res
-import myprofileapp.composeapp.generated.resources.compose_multiplatform
 
 @Composable
 @Preview
@@ -61,7 +62,7 @@ fun App() {
                 }
             },
             containerColor = CatppuccinMocha.base
-        ){ innerPadding ->
+        ) { innerPadding ->
             Surface(
                 modifier = Modifier
                     .fillMaxSize()

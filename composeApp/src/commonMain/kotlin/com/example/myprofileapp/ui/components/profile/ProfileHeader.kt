@@ -55,7 +55,12 @@ fun ProfileHeader(name: String, bio: String, statusColor: Color) {
         }
         Spacer(modifier = Modifier.height(16.dp))
 
-        Text(text = name, fontSize = 24.sp, fontWeight = FontWeight.Bold, color = CatppuccinMocha.text)
+        Text(
+            text = name,
+            fontSize = 24.sp,
+            fontWeight = FontWeight.Bold,
+            color = CatppuccinMocha.text
+        )
 
         Text(text = bio, fontSize = 16.sp, color = CatppuccinMocha.subtext0)
     }
