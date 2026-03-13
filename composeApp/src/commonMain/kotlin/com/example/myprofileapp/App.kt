@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -18,6 +19,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.myprofileapp.ui.components.profile.InfoItem
+import com.example.myprofileapp.ui.components.profile.ProfileCard
 import com.example.myprofileapp.ui.components.profile.ProfileHeader
 import org.jetbrains.compose.resources.painterResource
 
@@ -27,6 +30,7 @@ import myprofileapp.composeapp.generated.resources.compose_multiplatform
 @Composable
 @Preview
 fun App() {
+    var showDetailInfo by remember { mutableStateOf(true) }
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -37,5 +41,20 @@ fun App() {
             name = "Varasina Farmadani",
             bio = "a regular human, nothing special about me."
         )
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        Button(onClick = {
+            showDetailInfo = !showDetailInfo
+        }) {
+            Text(if (showDetailInfo) "hide detail" else "show detail")
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        AnimatedVisibility(visible = showDetailInfo) {
+            ProfileCard {
+            }
+        }
     }
 }
