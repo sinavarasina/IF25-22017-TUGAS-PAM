@@ -2,8 +2,10 @@ package com.example.myprofileapp
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -68,6 +70,7 @@ fun App() {
                 color = CatppuccinMocha.base
             ) {
                 var showDetailInfo by remember { mutableStateOf(false) }
+                var isOnline by remember { mutableStateOf(true) }
 
                 Column(
                     modifier = Modifier.fillMaxWidth()
@@ -80,19 +83,35 @@ fun App() {
                         ) {
                             ProfileHeader(
                                 name = "Varasina Farmadani",
-                                bio = "a regular human, nothing special about me."
+                                bio = "a regular human, nothing special about me.",
+                                statusColor = if (isOnline) CatppuccinMocha.green else CatppuccinMocha.red
                             )
 
                             Spacer(modifier = Modifier.height(24.dp))
 
-                            Button(
-                                onClick = { showDetailInfo = !showDetailInfo },
-                                colors = ButtonDefaults.buttonColors(
-                                    containerColor = CatppuccinMocha.mauve,
-                                    contentColor = CatppuccinMocha.crust
-                                )
+                            Row(
+                                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                                verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text(if (showDetailInfo) "Hide Detail" else "Show Detail")
+                                Button(
+                                    onClick = { showDetailInfo = !showDetailInfo },
+                                    colors = ButtonDefaults.buttonColors(
+                                        containerColor = CatppuccinMocha.mauve,
+                                        contentColor = CatppuccinMocha.crust
+                                    )
+                                ) {
+                                    Text(if (showDetailInfo) "Hide Detail" else "Show Detail")
+                                }
+
+                                Button(
+                                    onClick = { isOnline = !isOnline },
+                                    colors = ButtonDefaults.buttonColors(
+                                        containerColor = if (isOnline) CatppuccinMocha.green else CatppuccinMocha.red,
+                                        contentColor = CatppuccinMocha.crust
+                                    )
+                                ) {
+                                    Text(if (isOnline) "Set Offline" else "Set Online")
+                                }
                             }
                         }
                     }
