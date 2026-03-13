@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -24,7 +25,7 @@ import myprofileapp.composeapp.generated.resources.nagato_yuki_pfp_noupscale_n3_
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
-fun ProfileHeader(name: String, bio: String) {
+fun ProfileHeader(name: String, bio: String, statusColor: Color) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Box(contentAlignment = Alignment.BottomEnd) {
             Box(
@@ -48,7 +49,7 @@ fun ProfileHeader(name: String, bio: String) {
                 modifier = Modifier
                     .size(28.dp)
                     .clip(CircleShape)
-                    .background(CatppuccinMocha.green)
+                    .background(statusColor)
                     .border(3.dp, CatppuccinMocha.base, CircleShape)
             )
         }
