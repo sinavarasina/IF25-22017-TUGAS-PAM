@@ -14,7 +14,4 @@ data class ProfileUiState(
     val isOnline: Boolean = true,
     val showDetailInfo: Boolean = false,
     val isEditing: Boolean = false,
-    
-    val currentTheme: Theme = Themes.Catppuccin,
-    val isDarkMode: Boolean = true
 )
