@@ -29,7 +29,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -40,6 +39,8 @@ import com.example.myprofileapp.ui.colors.Themes
 import com.example.myprofileapp.ui.components.AppTopBar
 import com.example.myprofileapp.viewmodel.profile.ProfileViewModel
 import com.example.myprofileapp.viewmodel.theme.ThemeViewModel
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 
 @Composable
 @Preview
@@ -82,8 +83,11 @@ fun App() {
                 modifier = Modifier.fillMaxSize().padding(innerPadding).padding(16.dp),
                 color = colors.backgroundMain
             ) {
-                Column(modifier = Modifier.fillMaxWidth()) {
-
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .verticalScroll(rememberScrollState()) // <--- Ini kunci utamanya
+                ) {
                     ProfileCard(colors = colors) {
                         Column(
                             modifier = Modifier.fillMaxWidth(),
@@ -133,33 +137,31 @@ fun App() {
                     Spacer(modifier = Modifier.height(16.dp))
 
                     AnimatedVisibility(visible = profileState.isEditing) {
-                        ProfileCard(colors = colors) {
-                            Text("Edit Profile", color = colors.textPrimary, fontWeight = FontWeight.Bold)
-
-                            LabeledTextField(
-                                label = "Name",
-                                value = draftName,
-                                onValueChange = { draftName = it },
-                                colors = colors
-                            )
-                            LabeledTextField(
-                                label = "Bio",
-                                value = draftBio,
-                                onValueChange = { draftBio = it },
-                                colors = colors
-                            )
-
-                            Button(
-                                onClick = { profileViewModel.updateProfile(draftName, draftBio) },
-                                modifier = Modifier.fillMaxWidth(),
-                                colors = ButtonDefaults.buttonColors(
-                                    containerColor = colors.success,
-                                    contentColor = colors.backgroundMain
+                        EditProfileCard(
+                            draftName = draftName,
+                            draftBio = draftBio,
+                            draftStudentId = draftStudentId,
+                            draftEmail = draftEmail,
+                            draftPhone = draftPhone,
+                            draftWebsite = draftWebsite,
+                            onNameChange = { draftName = it },
+                            onBioChange = { draftBio = it },
+                            onStudentIdChange = { draftStudentId = it },
+                            onEmailChange = { draftEmail = it },
+                            onPhoneChange = { draftPhone = it },
+                            onWebsiteChange = { draftWebsite = it },
+                            onSaveClick = {
+                                profileViewModel.updateProfile(
+                                    newName = draftName,
+                                    newBio = draftBio,
+                                    newStudentId = draftStudentId,
+                                    newEmail = draftEmail,
+                                    newPhone = draftPhone,
+                                    newWebsite = draftWebsite
                                 )
-                            ) {
-                                Text("Save Changes")
-                            }
-                        }
+                            },
+                            colors = colors
+                        )
                     }
 
                     Spacer(modifier = Modifier.height(16.dp))
