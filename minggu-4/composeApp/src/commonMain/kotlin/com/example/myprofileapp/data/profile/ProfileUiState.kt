@@ -1,8 +1,5 @@
 package com.example.myprofileapp.data.profile
 
-import com.example.myprofileapp.ui.colors.Theme
-import com.example.myprofileapp.ui.colors.Themes
-
 data class ProfileUiState(
     val name: String = "Varasina Farmadani",
     val bio: String = "a regular human, nothing special about me.",
