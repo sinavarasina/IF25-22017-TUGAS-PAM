@@ -10,16 +10,16 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.myprofileapp.ui.colors.style.colorscheme.dark.CatppuccinMocha
+import com.example.myprofileapp.ui.colors.Colors
 
 @Composable
-fun ProfileCard(content: @Composable () -> Unit) {
+fun ProfileCard(colors: Colors, content: @Composable () -> Unit) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
-            containerColor = CatppuccinMocha.mantle
+            containerColor = colors.backgroundCard
         )
     ) {
         Column(

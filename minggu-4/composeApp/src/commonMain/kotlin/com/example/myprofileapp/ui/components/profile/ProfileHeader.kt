@@ -19,21 +19,21 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.myprofileapp.ui.colors.style.colorscheme.dark.CatppuccinMocha
+import com.example.myprofileapp.ui.colors.Colors
 import myprofileapp.composeapp.generated.resources.Res
 import myprofileapp.composeapp.generated.resources.nagato_yuki_pfp_noupscale_n3_s1
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
-fun ProfileHeader(name: String, bio: String, statusColor: Color) {
+fun ProfileHeader(name: String, bio: String, statusColor: Color, colors: Colors) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Box(contentAlignment = Alignment.BottomEnd) {
             Box(
                 modifier = Modifier
                     .size(120.dp)
                     .clip(CircleShape)
-                    .background(CatppuccinMocha.surface0)
-                    .border(2.dp, CatppuccinMocha.mauve, CircleShape),
+                    .background(colors.backgroundTopBar)
+                    .border(2.dp, colors.accentPrimary, CircleShape),
                 contentAlignment = Alignment.Center
             ) {
                 Image(
@@ -50,7 +50,7 @@ fun ProfileHeader(name: String, bio: String, statusColor: Color) {
                     .size(28.dp)
                     .clip(CircleShape)
                     .background(statusColor)
-                    .border(3.dp, CatppuccinMocha.base, CircleShape)
+                    .border(3.dp, colors.backgroundMain, CircleShape)
             )
         }
         Spacer(modifier = Modifier.height(16.dp))
@@ -59,9 +59,9 @@ fun ProfileHeader(name: String, bio: String, statusColor: Color) {
             text = name,
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
-            color = CatppuccinMocha.text
+            color = colors.textPrimary
         )
 
-        Text(text = bio, fontSize = 16.sp, color = CatppuccinMocha.subtext0)
+        Text(text = bio, fontSize = 16.sp, color = colors.textSecondary)
     }
 }

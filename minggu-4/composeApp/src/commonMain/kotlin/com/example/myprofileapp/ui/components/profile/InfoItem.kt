@@ -14,10 +14,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.myprofileapp.ui.colors.style.colorscheme.dark.CatppuccinMocha
+import com.example.myprofileapp.ui.colors.Colors
 
 @Composable
-fun InfoItem(icon: ImageVector, text: String, color: Color = CatppuccinMocha.text) {
+fun InfoItem(
+    icon: ImageVector,
+    text: String,
+    textColor: Color,
+    colors: Colors
+) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.fillMaxWidth()
@@ -25,10 +30,10 @@ fun InfoItem(icon: ImageVector, text: String, color: Color = CatppuccinMocha.tex
         Icon(
             imageVector = icon,
             contentDescription = null,
-            tint = CatppuccinMocha.blue,
+            tint = colors.accentSecondary,
             modifier = Modifier.size(24.dp)
         )
         Spacer(modifier = Modifier.width(16.dp))
-        Text(text = text, fontSize = 16.sp, color = color)
+        Text(text = text, fontSize = 16.sp, color = textColor)
     }
 }
