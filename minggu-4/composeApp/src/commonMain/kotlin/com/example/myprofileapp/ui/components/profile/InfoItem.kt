@@ -14,7 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.myprofileapp.ui.style.colorscheme.CatppuccinMocha
+import com.example.myprofileapp.ui.colors.style.colorscheme.dark.CatppuccinMocha
 
 @Composable
 fun InfoItem(icon: ImageVector, text: String, color: Color = CatppuccinMocha.text) {

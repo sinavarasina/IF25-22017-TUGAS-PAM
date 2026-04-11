@@ -37,7 +37,7 @@ import androidx.compose.ui.unit.sp
 import com.example.myprofileapp.ui.components.profile.InfoItem
 import com.example.myprofileapp.ui.components.profile.ProfileCard
 import com.example.myprofileapp.ui.components.profile.ProfileHeader
-import com.example.myprofileapp.ui.style.colorscheme.CatppuccinMocha
+import com.example.myprofileapp.ui.colors.style.colorscheme.dark.CatppuccinMocha
 
 @Composable
 @Preview
