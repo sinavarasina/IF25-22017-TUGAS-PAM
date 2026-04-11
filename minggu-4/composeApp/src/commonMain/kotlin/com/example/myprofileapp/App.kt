@@ -58,6 +58,10 @@ fun App() {
 
     var draftName by remember(profileState.name) { mutableStateOf(profileState.name) }
     var draftBio by remember(profileState.bio) { mutableStateOf(profileState.bio) }
+    var draftStudentId by remember(profileState.studentId) { mutableStateOf(profileState.studentId) }
+    var draftEmail by remember(profileState.email) { mutableStateOf(profileState.email) }
+    var draftPhone by remember(profileState.phone) { mutableStateOf(profileState.phone) }
+    var draftWebsite by remember(profileState.website) { mutableStateOf(profileState.website) }
 
     MaterialTheme {
         Scaffold(

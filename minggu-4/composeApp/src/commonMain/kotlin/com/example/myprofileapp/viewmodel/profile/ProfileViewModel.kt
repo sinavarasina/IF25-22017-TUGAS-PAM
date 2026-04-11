@@ -11,11 +11,22 @@ class ProfileViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(ProfileUiState())
     val uiState: StateFlow<ProfileUiState> = _uiState.asStateFlow()
 
-    fun updateProfile(newName: String, newBio: String) {
+    fun updateProfile(
+        newName: String,
+        newBio: String,
+        newStudentId: String,
+        newPhone: String,
+        newEmail: String,
+        newWebsite: String
+    ) {
         _uiState.update { currentState ->
             currentState.copy(
                 name = newName,
                 bio = newBio,
+                studentId = newStudentId,
+                email = newEmail,
+                phone = newPhone,
+                website = newWebsite,
                 isEditing = false
             )
         }
