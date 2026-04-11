@@ -31,12 +31,42 @@ fun EditProfileCard(
     ProfileCard(colors = colors) {
         Text("Edit Profile", color = colors.textPrimary, fontWeight = FontWeight.Bold)
 
-        LabeledTextField(label = "Name", value = draftName, onValueChange = onNameChange, colors = colors)
-        LabeledTextField(label = "Bio", value = draftBio, onValueChange = onBioChange, colors = colors)
-        LabeledTextField(label = "Student ID", value = draftStudentId, onValueChange = onStudentIdChange, colors = colors)
-        LabeledTextField(label = "Email", value = draftEmail, onValueChange = onEmailChange, colors = colors)
-        LabeledTextField(label = "Phone", value = draftPhone, onValueChange = onPhoneChange, colors = colors)
-        LabeledTextField(label = "Website", value = draftWebsite, onValueChange = onWebsiteChange, colors = colors)
+        LabeledTextField(
+            label = "Name",
+            value = draftName,
+            onValueChange = onNameChange,
+            colors = colors
+        )
+        LabeledTextField(
+            label = "Bio",
+            value = draftBio,
+            onValueChange = onBioChange,
+            colors = colors
+        )
+        LabeledTextField(
+            label = "Student ID",
+            value = draftStudentId,
+            onValueChange = onStudentIdChange,
+            colors = colors
+        )
+        LabeledTextField(
+            label = "Email",
+            value = draftEmail,
+            onValueChange = onEmailChange,
+            colors = colors
+        )
+        LabeledTextField(
+            label = "Phone",
+            value = draftPhone,
+            onValueChange = onPhoneChange,
+            colors = colors
+        )
+        LabeledTextField(
+            label = "Website",
+            value = draftWebsite,
+            onValueChange = onWebsiteChange,
+            colors = colors
+        )
 
         Button(
             onClick = onSaveClick,

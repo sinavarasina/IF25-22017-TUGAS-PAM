@@ -1,4 +1,4 @@
-    package com.example.myprofileapp
+package com.example.myprofileapp
 
 
 interface Platform {

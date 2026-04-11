@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Badge
 import androidx.compose.material.icons.filled.Email
@@ -32,15 +34,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.myprofileapp.ui.components.profile.*
 import com.example.myprofileapp.data.theme.ThemeMode
 import com.example.myprofileapp.data.theme.ThemeType
 import com.example.myprofileapp.ui.colors.Themes
 import com.example.myprofileapp.ui.components.AppTopBar
+import com.example.myprofileapp.ui.components.profile.EditProfileCard
+import com.example.myprofileapp.ui.components.profile.InfoItem
+import com.example.myprofileapp.ui.components.profile.ProfileCard
+import com.example.myprofileapp.ui.components.profile.ProfileHeader
 import com.example.myprofileapp.viewmodel.profile.ProfileViewModel
 import com.example.myprofileapp.viewmodel.theme.ThemeViewModel
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 
 @Composable
 @Preview
@@ -55,7 +58,8 @@ fun App() {
         ThemeType.CATPPUCCIN -> Themes.Catppuccin
         ThemeType.GRUVBOX -> Themes.GruvBox
     }
-    val colors = if (themeState.themeMode == ThemeMode.DARK) currentTheme.dark else currentTheme.light
+    val colors =
+        if (themeState.themeMode == ThemeMode.DARK) currentTheme.dark else currentTheme.light
 
     var draftName by remember(profileState.name) { mutableStateOf(profileState.name) }
     var draftBio by remember(profileState.bio) { mutableStateOf(profileState.bio) }
@@ -129,7 +133,10 @@ fun App() {
 
                             Spacer(modifier = Modifier.height(8.dp))
                             TextButton(onClick = { profileViewModel.toggleEditMode() }) {
-                                Text(if (profileState.isEditing) "Cancel Edit" else "Edit Profile", color = colors.accentSecondary)
+                                Text(
+                                    if (profileState.isEditing) "Cancel Edit" else "Edit Profile",
+                                    color = colors.accentSecondary
+                                )
                             }
                         }
                     }
@@ -168,10 +175,30 @@ fun App() {
 
                     AnimatedVisibility(visible = profileState.showDetailInfo && !profileState.isEditing) {
                         ProfileCard(colors = colors) {
-                            InfoItem(icon = Icons.Default.Badge, text = profileState.studentId, textColor = colors.textPrimary, colors = colors)
-                            InfoItem(icon = Icons.Default.Email, text = profileState.email, textColor = colors.textPrimary, colors = colors)
-                            InfoItem(icon = Icons.Default.Phone, text = profileState.phone, textColor = colors.textPrimary, colors = colors)
-                            InfoItem(icon = Icons.Default.Link, text = profileState.website, textColor = colors.link, colors = colors)
+                            InfoItem(
+                                icon = Icons.Default.Badge,
+                                text = profileState.studentId,
+                                textColor = colors.textPrimary,
+                                colors = colors
+                            )
+                            InfoItem(
+                                icon = Icons.Default.Email,
+                                text = profileState.email,
+                                textColor = colors.textPrimary,
+                                colors = colors
+                            )
+                            InfoItem(
+                                icon = Icons.Default.Phone,
+                                text = profileState.phone,
+                                textColor = colors.textPrimary,
+                                colors = colors
+                            )
+                            InfoItem(
+                                icon = Icons.Default.Link,
+                                text = profileState.website,
+                                textColor = colors.link,
+                                colors = colors
+                            )
                         }
                     }
                 }

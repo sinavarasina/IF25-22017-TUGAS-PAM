@@ -1,10 +1,9 @@
 package com.example.myprofileapp.ui.colors
 
 import androidx.compose.ui.graphics.Color
-
 import com.example.myprofileapp.ui.colors.style.colorscheme.dark.CatppuccinMocha
-import com.example.myprofileapp.ui.colors.style.colorscheme.light.CatppuccinLatte
 import com.example.myprofileapp.ui.colors.style.colorscheme.dark.GruvBoxDark
+import com.example.myprofileapp.ui.colors.style.colorscheme.light.CatppuccinLatte
 import com.example.myprofileapp.ui.colors.style.colorscheme.light.GruvBoxLight
 
 data class Colors(

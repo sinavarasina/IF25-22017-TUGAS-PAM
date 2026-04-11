@@ -29,9 +29,7 @@ fun ProfileHeader(name: String, bio: String, statusColor: Color, colors: Colors)
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Box(contentAlignment = Alignment.BottomEnd) {
             Box(
-                modifier = Modifier
-                    .size(120.dp)
-                    .clip(CircleShape)
+                modifier = Modifier.size(120.dp).clip(CircleShape)
                     .background(colors.backgroundTopBar)
                     .border(2.dp, colors.accentPrimary, CircleShape),
                 contentAlignment = Alignment.Center
@@ -39,27 +37,19 @@ fun ProfileHeader(name: String, bio: String, statusColor: Color, colors: Colors)
                 Image(
                     painter = painterResource(Res.drawable.nagato_yuki_pfp_noupscale_n3_s1),
                     contentDescription = "Profile Picture",
-                    modifier = Modifier
-                        .size(120.dp)
-                        .clip(CircleShape),
+                    modifier = Modifier.size(120.dp).clip(CircleShape),
                     contentScale = ContentScale.Crop,
                 )
             }
             Box(
-                modifier = Modifier
-                    .size(28.dp)
-                    .clip(CircleShape)
-                    .background(statusColor)
+                modifier = Modifier.size(28.dp).clip(CircleShape).background(statusColor)
                     .border(3.dp, colors.backgroundMain, CircleShape)
             )
         }
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = name,
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Bold,
-            color = colors.textPrimary
+            text = name, fontSize = 24.sp, fontWeight = FontWeight.Bold, color = colors.textPrimary
         )
 
         Text(text = bio, fontSize = 16.sp, color = colors.textSecondary)
