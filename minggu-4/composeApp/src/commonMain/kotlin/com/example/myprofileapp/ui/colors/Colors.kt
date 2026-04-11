@@ -1,8 +1,11 @@
 package com.example.myprofileapp.ui.colors
 
 import androidx.compose.ui.graphics.Color
+
 import com.example.myprofileapp.ui.colors.style.colorscheme.dark.CatppuccinMocha
 import com.example.myprofileapp.ui.colors.style.colorscheme.light.CatppuccinLatte
+import com.example.myprofileapp.ui.colors.style.colorscheme.dark.GruvBoxDark
+import com.example.myprofileapp.ui.colors.style.colorscheme.light.GruvBoxLight
 
 data class Colors(
     val backgroundMain: Color,
@@ -67,6 +70,46 @@ object Themes {
 
             success = CatppuccinMocha.green,
             error = CatppuccinMocha.red
+        )
+    )
+
+    val GruvBox = Theme(
+        name = "GruvBox",
+
+        light = Colors(
+            backgroundMain = GruvBoxLight.bg0,
+            backgroundTopBar = GruvBoxLight.bgHard,
+            backgroundCard = GruvBoxLight.bgSoft,
+
+            textPrimary = GruvBoxLight.fg1,
+            textSecondary = GruvBoxLight.fg4,
+
+            borderUnfocused = GruvBoxLight.bg4,
+
+            accentPrimary = GruvBoxLight.orangeStrong,
+            accentSecondary = GruvBoxLight.blueStrong,
+            link = GruvBoxLight.aquaStrong,
+
+            success = GruvBoxLight.greenStrong,
+            error = GruvBoxLight.redStrong
+        ),
+
+        dark = Colors(
+            backgroundMain = GruvBoxDark.bg0,
+            backgroundTopBar = GruvBoxDark.bgHard,
+            backgroundCard = GruvBoxDark.bgSoft,
+
+            textPrimary = GruvBoxDark.fg1,
+            textSecondary = GruvBoxDark.fg4,
+
+            borderUnfocused = GruvBoxDark.bg3,
+
+            accentPrimary = GruvBoxDark.orangeStrong,
+            accentSecondary = GruvBoxDark.blueStrong,
+            link = GruvBoxDark.aquaStrong,
+
+            success = GruvBoxDark.greenStrong,
+            error = GruvBoxDark.redStrong
         )
     )
 }

@@ -37,3 +37,41 @@ data class CatppuccinPalette(
     val mantle: Color,
     val crust: Color
 )
+
+data class GruvBoxPalette(
+    val bgHard: Color,
+    val bg0: Color,
+    val bgSoft: Color,
+
+    val bg1: Color,
+    val bg2: Color,
+    val bg3: Color,
+    val bg4: Color,
+
+    val fg0: Color,
+    val fg1: Color,
+    val fg2: Color,
+    val fg3: Color,
+    val fg4: Color,
+
+    val red: Color,
+    val redStrong: Color,
+
+    val green: Color,
+    val greenStrong: Color,
+
+    val yellow: Color,
+    val yellowStrong: Color,
+
+    val blue: Color,
+    val blueStrong: Color,
+
+    val purple: Color,
+    val purpleStrong: Color,
+
+    val aqua: Color,
+    val aquaStrong: Color,
+
+    val orange: Color,
+    val orangeStrong: Color
+)
