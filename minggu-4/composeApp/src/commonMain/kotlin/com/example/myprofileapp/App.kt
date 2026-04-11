@@ -1,9 +1,7 @@
 package com.example.myprofileapp
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -11,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Badge
 import androidx.compose.material.icons.filled.Email
@@ -23,7 +20,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -33,59 +32,64 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.example.myprofileapp.ui.components.profile.InfoItem
-import com.example.myprofileapp.ui.components.profile.ProfileCard
-import com.example.myprofileapp.ui.components.profile.ProfileHeader
-import com.example.myprofileapp.ui.colors.style.colorscheme.dark.CatppuccinMocha
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.myprofileapp.ui.components.profile.*
+import com.example.myprofileapp.data.theme.ThemeMode
+import com.example.myprofileapp.data.theme.ThemeType
+import com.example.myprofileapp.ui.colors.Themes
+import com.example.myprofileapp.ui.components.AppTopBar
+import com.example.myprofileapp.viewmodel.profile.ProfileViewModel
+import com.example.myprofileapp.viewmodel.theme.ThemeViewModel
 
 @Composable
 @Preview
 fun App() {
+    val themeViewModel: ThemeViewModel = viewModel()
+    val profileViewModel: ProfileViewModel = viewModel()
+
+    val themeState by themeViewModel.themeState.collectAsState()
+    val profileState by profileViewModel.uiState.collectAsState()
+
+    val currentTheme = when (themeState.activeThemeType) {
+        ThemeType.CATPPUCCIN -> Themes.Catppuccin
+        ThemeType.GRUVBOX -> Themes.GruvBox
+    }
+    val colors = if (themeState.themeMode == ThemeMode.DARK) currentTheme.dark else currentTheme.light
+
+    var draftName by remember(profileState.name) { mutableStateOf(profileState.name) }
+    var draftBio by remember(profileState.bio) { mutableStateOf(profileState.bio) }
+
     MaterialTheme {
         Scaffold(
             topBar = {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(CatppuccinMocha.crust)
-                        .statusBarsPadding()
-                        .padding(vertical = 16.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = "Profile",
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 20.sp,
-                        color = CatppuccinMocha.text
-                    )
-                }
+                AppTopBar(
+                    title = "Profile",
+                    colors = colors,
+                    activeThemeType = themeState.activeThemeType,
+                    themeMode = themeState.themeMode,
+                    onThemeTypeChange = { newType -> themeViewModel.setThemeType(newType) },
+                    onThemeModeChange = { newMode -> themeViewModel.setThemeMode(newMode) },
+                    showThemeControls = true
+                )
             },
-            containerColor = CatppuccinMocha.base
+            containerColor = colors.backgroundMain
         ) { innerPadding ->
             Surface(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(innerPadding)
-                    .padding(16.dp),
-                color = CatppuccinMocha.base
+                modifier = Modifier.fillMaxSize().padding(innerPadding).padding(16.dp),
+                color = colors.backgroundMain
             ) {
-                var showDetailInfo by remember { mutableStateOf(false) }
-                var isOnline by remember { mutableStateOf(true) }
+                Column(modifier = Modifier.fillMaxWidth()) {
 
-                Column(
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-
-                    ProfileCard {
+                    ProfileCard(colors = colors) {
                         Column(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             ProfileHeader(
-                                name = "Varasina Farmadani",
-                                bio = "a regular human, nothing special about me.",
-                                statusColor = if (isOnline) CatppuccinMocha.green else CatppuccinMocha.red
+                                name = profileState.name,
+                                bio = profileState.bio,
+                                statusColor = if (profileState.isOnline) colors.success else colors.error,
+                                colors = colors
                             )
 
                             Spacer(modifier = Modifier.height(24.dp))
@@ -95,49 +99,73 @@ fun App() {
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Button(
-                                    onClick = { showDetailInfo = !showDetailInfo },
+                                    onClick = { profileViewModel.toggleDetailInfo() },
                                     colors = ButtonDefaults.buttonColors(
-                                        containerColor = CatppuccinMocha.mauve,
-                                        contentColor = CatppuccinMocha.crust
+                                        containerColor = colors.accentPrimary,
+                                        contentColor = colors.backgroundMain
                                     )
                                 ) {
-                                    Text(if (showDetailInfo) "Hide Detail" else "Show Detail")
+                                    Text(if (profileState.showDetailInfo) "Hide Detail" else "Show Detail")
                                 }
 
                                 Button(
-                                    onClick = { isOnline = !isOnline },
+                                    onClick = { profileViewModel.toggleOnlineStatus() },
                                     colors = ButtonDefaults.buttonColors(
-                                        containerColor = if (isOnline) CatppuccinMocha.green else CatppuccinMocha.red,
-                                        contentColor = CatppuccinMocha.crust
+                                        containerColor = if (profileState.isOnline) colors.success else colors.error,
+                                        contentColor = colors.backgroundMain
                                     )
                                 ) {
-                                    Text(if (isOnline) "Set Offline" else "Set Online")
+                                    Text(if (profileState.isOnline) "Set Offline" else "Set Online")
                                 }
+                            }
+
+                            Spacer(modifier = Modifier.height(8.dp))
+                            TextButton(onClick = { profileViewModel.toggleEditMode() }) {
+                                Text(if (profileState.isEditing) "Cancel Edit" else "Edit Profile", color = colors.accentSecondary)
                             }
                         }
                     }
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    AnimatedVisibility(visible = showDetailInfo) {
-                        ProfileCard {
-                            InfoItem(
-                                icon = Icons.Default.Badge,
-                                text = "123140107"
+                    AnimatedVisibility(visible = profileState.isEditing) {
+                        ProfileCard(colors = colors) {
+                            Text("Edit Profile", color = colors.textPrimary, fontWeight = FontWeight.Bold)
+
+                            LabeledTextField(
+                                label = "Name",
+                                value = draftName,
+                                onValueChange = { draftName = it },
+                                colors = colors
                             )
-                            InfoItem(
-                                icon = Icons.Default.Email,
-                                text = "sina@sinanonym.my.id"
+                            LabeledTextField(
+                                label = "Bio",
+                                value = draftBio,
+                                onValueChange = { draftBio = it },
+                                colors = colors
                             )
-                            InfoItem(
-                                icon = Icons.Default.Phone,
-                                text = "+6285117788740"
-                            )
-                            InfoItem(
-                                icon = Icons.Default.Link,
-                                text = "sinanonym.my.id",
-                                color = CatppuccinMocha.sapphire
-                            )
+
+                            Button(
+                                onClick = { profileViewModel.updateProfile(draftName, draftBio) },
+                                modifier = Modifier.fillMaxWidth(),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = colors.success,
+                                    contentColor = colors.backgroundMain
+                                )
+                            ) {
+                                Text("Save Changes")
+                            }
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    AnimatedVisibility(visible = profileState.showDetailInfo && !profileState.isEditing) {
+                        ProfileCard(colors = colors) {
+                            InfoItem(icon = Icons.Default.Badge, text = profileState.studentId, textColor = colors.textPrimary, colors = colors)
+                            InfoItem(icon = Icons.Default.Email, text = profileState.email, textColor = colors.textPrimary, colors = colors)
+                            InfoItem(icon = Icons.Default.Phone, text = profileState.phone, textColor = colors.textPrimary, colors = colors)
+                            InfoItem(icon = Icons.Default.Link, text = profileState.website, textColor = colors.link, colors = colors)
                         }
                     }
                 }
