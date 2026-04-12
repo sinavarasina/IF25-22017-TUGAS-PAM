@@ -1,10 +1,10 @@
 package com.example.myprofileapp.ui.theme
 
 import androidx.compose.ui.graphics.Color
-import com.example.myprofileapp.ui.theme.style.colorscheme.dark.CatppuccinMocha
-import com.example.myprofileapp.ui.theme.style.colorscheme.dark.GruvBoxDark
-import com.example.myprofileapp.ui.theme.style.colorscheme.light.CatppuccinLatte
-import com.example.myprofileapp.ui.theme.style.colorscheme.light.GruvBoxLight
+import com.example.myprofileapp.ui.theme.style.colorscheme.CatppuccinLatte
+import com.example.myprofileapp.ui.theme.style.colorscheme.CatppuccinMocha
+import com.example.myprofileapp.ui.theme.style.colorscheme.GruvBoxDark
+import com.example.myprofileapp.ui.theme.style.colorscheme.GruvBoxLight
 
 data class Colors(
     val backgroundMain: Color,

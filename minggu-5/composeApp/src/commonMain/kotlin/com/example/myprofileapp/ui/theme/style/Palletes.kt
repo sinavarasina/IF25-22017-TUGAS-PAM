@@ -1,4 +1,4 @@
-package com.example.myprofileapp.ui.theme.style.colorscheme
+package com.example.myprofileapp.ui.theme.style
 
 import androidx.compose.ui.graphics.Color
 
