@@ -13,7 +13,14 @@ NIM = 123140107
 
 Class = PAM RA
 
+## Media
+
+### Video
+[![Demo](media/gif/gif4.0.gif)](media/video/record4.0.mp4)
+> click the image to see the highres one
+
 ## Screenshoot
+![Screenshot](media/screenshoots/SS4.0.png)
 
 ## Code Documentation
 
