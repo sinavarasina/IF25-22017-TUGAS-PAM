@@ -39,7 +39,7 @@ import com.example.myprofileapp.viewmodel.profile.ProfileViewModel
 @Composable
 fun ProfileScreen(
     profileViewModel: ProfileViewModel,
-    colors: Colors
+    colors: Colors,
 ) {
     val profileState by profileViewModel.uiState.collectAsState()
 
@@ -51,42 +51,45 @@ fun ProfileScreen(
     var draftWebsite by remember(profileState.website) { mutableStateOf(profileState.website) }
 
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-            .verticalScroll(rememberScrollState())
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .padding(16.dp)
+                .verticalScroll(rememberScrollState()),
     ) {
         ProfileCard(colors = colors) {
             Column(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 ProfileHeader(
                     name = profileState.name,
                     bio = profileState.bio,
                     statusColor = if (profileState.isOnline) colors.success else colors.error,
-                    colors = colors
+                    colors = colors,
                 )
                 Spacer(modifier = Modifier.height(24.dp))
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(16.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Button(
                         onClick = { profileViewModel.toggleDetailInfo() },
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = colors.accentPrimary,
-                            contentColor = colors.backgroundMain
-                        )
+                        colors =
+                            ButtonDefaults.buttonColors(
+                                containerColor = colors.accentPrimary,
+                                contentColor = colors.backgroundMain,
+                            ),
                     ) {
                         Text(if (profileState.showDetailInfo) "Hide Detail" else "Show Detail")
                     }
                     Button(
                         onClick = { profileViewModel.toggleOnlineStatus() },
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = if (profileState.isOnline) colors.success else colors.error,
-                            contentColor = colors.backgroundMain
-                        )
+                        colors =
+                            ButtonDefaults.buttonColors(
+                                containerColor = if (profileState.isOnline) colors.success else colors.error,
+                                contentColor = colors.backgroundMain,
+                            ),
                     ) {
                         Text(if (profileState.isOnline) "Set Offline" else "Set Online")
                     }
@@ -95,7 +98,7 @@ fun ProfileScreen(
                 TextButton(onClick = { profileViewModel.toggleEditMode() }) {
                     Text(
                         if (profileState.isEditing) "Cancel Edit" else "Edit Profile",
-                        color = colors.accentSecondary
+                        color = colors.accentSecondary,
                     )
                 }
             }
@@ -124,10 +127,10 @@ fun ProfileScreen(
                         draftStudentId,
                         draftPhone,
                         draftEmail,
-                        draftWebsite
+                        draftWebsite,
                     )
                 },
-                colors = colors
+                colors = colors,
             )
         }
 
@@ -139,25 +142,25 @@ fun ProfileScreen(
                     icon = Icons.Default.Badge,
                     text = profileState.studentId,
                     textColor = colors.textPrimary,
-                    colors = colors
+                    colors = colors,
                 )
                 InfoItem(
                     icon = Icons.Default.Email,
                     text = profileState.email,
                     textColor = colors.textPrimary,
-                    colors = colors
+                    colors = colors,
                 )
                 InfoItem(
                     icon = Icons.Default.Phone,
                     text = profileState.phone,
                     textColor = colors.textPrimary,
-                    colors = colors
+                    colors = colors,
                 )
                 InfoItem(
                     icon = Icons.Default.Link,
                     text = profileState.website,
                     textColor = colors.link,
-                    colors = colors
+                    colors = colors,
                 )
             }
         }

@@ -16,7 +16,7 @@ fun LabeledTextField(
     label: String,
     value: String,
     onValueChange: (String) -> Unit,
-    colors: Colors
+    colors: Colors,
 ) {
     Column(modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)) {
         OutlinedTextField(
@@ -24,14 +24,15 @@ fun LabeledTextField(
             onValueChange = onValueChange,
             label = { Text(label) },
             modifier = Modifier.fillMaxWidth(),
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedTextColor = colors.textPrimary,
-                unfocusedTextColor = colors.textPrimary,
-                focusedBorderColor = colors.accentPrimary,
-                unfocusedBorderColor = colors.borderUnfocused,
-                focusedLabelColor = colors.accentPrimary,
-                unfocusedLabelColor = colors.borderUnfocused
-            )
+            colors =
+                OutlinedTextFieldDefaults.colors(
+                    focusedTextColor = colors.textPrimary,
+                    unfocusedTextColor = colors.textPrimary,
+                    focusedBorderColor = colors.accentPrimary,
+                    unfocusedBorderColor = colors.borderUnfocused,
+                    focusedLabelColor = colors.accentPrimary,
+                    unfocusedLabelColor = colors.borderUnfocused,
+                ),
         )
     }
 }

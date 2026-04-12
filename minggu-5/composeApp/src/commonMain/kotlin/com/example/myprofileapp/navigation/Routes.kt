@@ -1,9 +1,14 @@
 package com.example.myprofileapp.navigation
 
-sealed class Screen(val route: String) {
+sealed class Screen(
+    val route: String,
+) {
     object Notes : Screen("notes_list")
+
     object Favorites : Screen("favorites")
+
     object Profile : Screen("profile")
+
     object AddNote : Screen("add_note")
 
     object NoteDetail : Screen("note_detail/{noteId}") {

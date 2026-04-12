@@ -37,27 +37,28 @@ fun AppTopBar(
     onThemeTypeChange: (ThemeType) -> Unit,
     onThemeModeChange: (ThemeMode) -> Unit,
     modifier: Modifier = Modifier,
-    showThemeControls: Boolean = true
+    showThemeControls: Boolean = true,
 ) {
     Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .background(colors.backgroundTopBar)
-            .statusBarsPadding()
-            .padding(horizontal = 16.dp, vertical = 16.dp),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .background(colors.backgroundTopBar)
+                .statusBarsPadding()
+                .padding(horizontal = 16.dp, vertical = 16.dp),
     ) {
         Text(
             text = title,
             fontWeight = FontWeight.Bold,
             fontSize = 20.sp,
             color = colors.textPrimary,
-            modifier = Modifier.align(Alignment.CenterStart)
+            modifier = Modifier.align(Alignment.CenterStart),
         )
 
         if (showThemeControls) {
             Row(
                 modifier = Modifier.align(Alignment.CenterEnd),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 var expanded by remember { mutableStateOf(false) }
 
@@ -66,27 +67,27 @@ fun AppTopBar(
                         Text(
                             text = activeThemeType.name,
                             color = colors.accentPrimary,
-                            fontWeight = FontWeight.Bold
+                            fontWeight = FontWeight.Bold,
                         )
                     }
                     DropdownMenu(
                         expanded = expanded,
                         onDismissRequest = { expanded = false },
-                        modifier = Modifier.background(colors.backgroundCard)
+                        modifier = Modifier.background(colors.backgroundCard),
                     ) {
                         DropdownMenuItem(
                             text = { Text("Catppuccin", color = colors.textPrimary) },
                             onClick = {
                                 onThemeTypeChange(ThemeType.CATPPUCCIN)
                                 expanded = false
-                            }
+                            },
                         )
                         DropdownMenuItem(
                             text = { Text("GruvBox", color = colors.textPrimary) },
                             onClick = {
                                 onThemeTypeChange(ThemeType.GRUVBOX)
                                 expanded = false
-                            }
+                            },
                         )
                     }
                 }
@@ -96,7 +97,7 @@ fun AppTopBar(
                 Text(
                     text = if (themeMode == ThemeMode.DARK) "Dark" else "Light",
                     color = colors.textSecondary,
-                    modifier = Modifier.padding(end = 8.dp)
+                    modifier = Modifier.padding(end = 8.dp),
                 )
                 Switch(
                     checked = themeMode == ThemeMode.DARK,
@@ -104,12 +105,13 @@ fun AppTopBar(
                         val newMode = if (isChecked) ThemeMode.DARK else ThemeMode.LIGHT
                         onThemeModeChange(newMode)
                     },
-                    colors = SwitchDefaults.colors(
-                        checkedThumbColor = colors.backgroundMain,
-                        checkedTrackColor = colors.accentPrimary,
-                        uncheckedThumbColor = colors.backgroundMain,
-                        uncheckedTrackColor = colors.borderUnfocused
-                    )
+                    colors =
+                        SwitchDefaults.colors(
+                            checkedThumbColor = colors.backgroundMain,
+                            checkedTrackColor = colors.accentPrimary,
+                            uncheckedThumbColor = colors.backgroundMain,
+                            uncheckedTrackColor = colors.borderUnfocused,
+                        ),
                 )
             }
         }

@@ -37,32 +37,35 @@ fun App() {
 
     val themeState by themeViewModel.themeState.collectAsState()
 
-    val currentTheme = when (themeState.activeThemeType) {
-        ThemeType.CATPPUCCIN -> Themes.Catppuccin
-        ThemeType.GRUVBOX -> Themes.GruvBox
-    }
+    val currentTheme =
+        when (themeState.activeThemeType) {
+            ThemeType.CATPPUCCIN -> Themes.Catppuccin
+            ThemeType.GRUVBOX -> Themes.GruvBox
+        }
     val colors = if (themeState.themeMode == ThemeMode.DARK) currentTheme.dark else currentTheme.light
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
-    val bottomNavRoutes = listOf(
-        Screen.Notes.route,
-        Screen.Favorites.route,
-        Screen.Profile.route
-    )
+    val bottomNavRoutes =
+        listOf(
+            Screen.Notes.route,
+            Screen.Favorites.route,
+            Screen.Profile.route,
+        )
     val showBottomNav = currentRoute in bottomNavRoutes
     val showFab = currentRoute == Screen.Notes.route
 
-    val topBarTitle = when {
-        currentRoute == Screen.Notes.route -> "Notes"
-        currentRoute == Screen.Favorites.route -> "Favorites"
-        currentRoute == Screen.Profile.route -> "Profile"
-        currentRoute == Screen.AddNote.route -> "Add Note"
-        currentRoute?.startsWith("note_detail") == true -> "Note Detail"
-        currentRoute?.startsWith("edit_note") == true -> "Edit Note"
-        else -> "MyApp"
-    }
+    val topBarTitle =
+        when {
+            currentRoute == Screen.Notes.route -> "Notes"
+            currentRoute == Screen.Favorites.route -> "Favorites"
+            currentRoute == Screen.Profile.route -> "Profile"
+            currentRoute == Screen.AddNote.route -> "Add Note"
+            currentRoute?.startsWith("note_detail") == true -> "Note Detail"
+            currentRoute?.startsWith("edit_note") == true -> "Edit Note"
+            else -> "MyApp"
+        }
 
     MaterialTheme {
         Scaffold(
@@ -74,7 +77,7 @@ fun App() {
                     themeMode = themeState.themeMode,
                     onThemeTypeChange = { themeViewModel.setThemeType(it) },
                     onThemeModeChange = { themeViewModel.setThemeMode(it) },
-                    showThemeControls = currentRoute == Screen.Profile.route
+                    showThemeControls = currentRoute == Screen.Profile.route,
                 )
             },
             bottomBar = {
@@ -86,24 +89,24 @@ fun App() {
                 AnimatedVisibility(
                     visible = showFab,
                     enter = scaleIn(),
-                    exit = scaleOut()
+                    exit = scaleOut(),
                 ) {
                     FloatingActionButton(
                         onClick = { navController.navigate(Screen.AddNote.route) },
                         containerColor = colors.accentPrimary,
-                        contentColor = colors.backgroundMain
+                        contentColor = colors.backgroundMain,
                     ) {
                         Icon(Icons.Default.Add, contentDescription = "Add Note")
                     }
                 }
             },
-            containerColor = colors.backgroundMain
+            containerColor = colors.backgroundMain,
         ) { innerPadding ->
             Navigation(
                 navController = navController,
                 profileViewModel = profileViewModel,
                 colors = colors,
-                modifier = Modifier.padding(innerPadding)
+                modifier = Modifier.padding(innerPadding),
             )
         }
     }

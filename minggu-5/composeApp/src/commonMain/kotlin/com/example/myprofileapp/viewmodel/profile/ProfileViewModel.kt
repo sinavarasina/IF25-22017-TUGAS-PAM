@@ -17,7 +17,7 @@ class ProfileViewModel : ViewModel() {
         newStudentId: String,
         newPhone: String,
         newEmail: String,
-        newWebsite: String
+        newWebsite: String,
     ) {
         _uiState.update { currentState ->
             currentState.copy(
@@ -27,7 +27,7 @@ class ProfileViewModel : ViewModel() {
                 email = newEmail,
                 phone = newPhone,
                 website = newWebsite,
-                isEditing = false
+                isEditing = false,
             )
         }
     }

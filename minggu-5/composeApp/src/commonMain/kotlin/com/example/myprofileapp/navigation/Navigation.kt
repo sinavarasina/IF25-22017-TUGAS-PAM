@@ -21,12 +21,12 @@ fun Navigation(
     navController: NavHostController,
     profileViewModel: ProfileViewModel,
     colors: Colors,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     NavHost(
         navController = navController,
         startDestination = Screen.Notes.route,
-        modifier = modifier
+        modifier = modifier,
     ) {
         composable(Screen.Notes.route) {
             NoteListScreen(
@@ -36,7 +36,7 @@ fun Navigation(
                 },
                 onNavigateToAdd = {
                     navController.navigate(Screen.AddNote.route)
-                }
+                },
             )
         }
         composable(Screen.Favorites.route) {
@@ -53,28 +53,32 @@ fun Navigation(
         }
         composable(
             route = Screen.NoteDetail.route,
-            arguments = listOf(navArgument("noteId") { type = NavType.IntType })
+            arguments = listOf(navArgument("noteId") { type = NavType.IntType }),
         ) { backStackEntry ->
 
-            val id = backStackEntry.arguments?.let { bundle ->
-                NavType.IntType.get(bundle, "noteId")
-            } ?: 0
+            val id =
+                backStackEntry.arguments?.let { bundle ->
+                    NavType.IntType.get(bundle, "noteId")
+                } ?: 0
 
             NoteDetailScreen(
-                noteId = id, colors = colors,
+                noteId = id,
+                colors = colors,
                 onNavigateToEdit = { noteId ->
                     navController.navigate(Screen.EditNote.createRoute(noteId))
                 },
-                onBack = { navController.popBackStack() })
+                onBack = { navController.popBackStack() },
+            )
         }
         composable(
             route = Screen.EditNote.route,
-            arguments = listOf(navArgument("noteId") { type = NavType.IntType })
+            arguments = listOf(navArgument("noteId") { type = NavType.IntType }),
         ) { backStackEntry ->
 
-            val id = backStackEntry.arguments?.let { bundle ->
-                NavType.IntType.get(bundle, "noteId")
-            } ?: 0
+            val id =
+                backStackEntry.arguments?.let { bundle ->
+                    NavType.IntType.get(bundle, "noteId")
+                } ?: 0
 
             EditNoteScreen(noteId = id, colors = colors, onBack = { navController.popBackStack() })
         }

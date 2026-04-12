@@ -2,15 +2,15 @@ package com.example.myprofileapp.data.theme
 
 enum class ThemeType {
     CATPPUCCIN,
-    GRUVBOX
+    GRUVBOX,
 }
 
 enum class ThemeMode {
     LIGHT,
-    DARK
+    DARK,
 }
 
 data class ThemeState(
     val activeThemeType: ThemeType = ThemeType.CATPPUCCIN,
-    val themeMode: ThemeMode = ThemeMode.DARK
+    val themeMode: ThemeMode = ThemeMode.DARK,
 )

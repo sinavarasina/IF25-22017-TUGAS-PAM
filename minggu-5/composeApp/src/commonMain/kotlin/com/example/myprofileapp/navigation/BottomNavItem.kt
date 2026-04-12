@@ -9,9 +9,11 @@ import androidx.compose.ui.graphics.vector.ImageVector
 sealed class BottomNavItem(
     val route: String,
     val icon: ImageVector,
-    val title: String
+    val title: String,
 ) {
     object Notes : BottomNavItem(Screen.Notes.route, Icons.Default.List, "Notes")
+
     object Favorites : BottomNavItem(Screen.Favorites.route, Icons.Default.Favorite, "Favorites")
+
     object Profile : BottomNavItem(Screen.Profile.route, Icons.Default.Person, "Profile")
 }

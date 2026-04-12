@@ -13,7 +13,10 @@ import com.example.myprofileapp.navigation.BottomNavItem
 import com.example.myprofileapp.ui.theme.Colors
 
 @Composable
-fun AppBottomBar(navController: NavController, colors: Colors) {
+fun AppBottomBar(
+    navController: NavController,
+    colors: Colors,
+) {
     val items = listOf(BottomNavItem.Notes, BottomNavItem.Favorites, BottomNavItem.Profile)
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
@@ -31,13 +34,14 @@ fun AppBottomBar(navController: NavController, colors: Colors) {
                 },
                 icon = { Icon(item.icon, contentDescription = item.title) },
                 label = { Text(item.title) },
-                colors = NavigationBarItemDefaults.colors(
-                    selectedIconColor = colors.backgroundMain,
-                    selectedTextColor = colors.accentPrimary,
-                    indicatorColor = colors.accentPrimary,
-                    unselectedIconColor = colors.textSecondary,
-                    unselectedTextColor = colors.textSecondary
-                )
+                colors =
+                    NavigationBarItemDefaults.colors(
+                        selectedIconColor = colors.backgroundMain,
+                        selectedTextColor = colors.accentPrimary,
+                        indicatorColor = colors.accentPrimary,
+                        unselectedIconColor = colors.textSecondary,
+                        unselectedTextColor = colors.textSecondary,
+                    ),
             )
         }
     }

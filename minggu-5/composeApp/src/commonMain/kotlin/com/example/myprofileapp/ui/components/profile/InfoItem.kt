@@ -21,17 +21,17 @@ fun InfoItem(
     icon: ImageVector,
     text: String,
     textColor: Color,
-    colors: Colors
+    colors: Colors,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
     ) {
         Icon(
             imageVector = icon,
             contentDescription = null,
             tint = colors.accentSecondary,
-            modifier = Modifier.size(24.dp)
+            modifier = Modifier.size(24.dp),
         )
         Spacer(modifier = Modifier.width(16.dp))
         Text(text = text, fontSize = 16.sp, color = textColor)

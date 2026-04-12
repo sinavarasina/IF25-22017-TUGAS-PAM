@@ -31,35 +31,41 @@ import com.example.myprofileapp.ui.theme.Colors
 fun NoteCard(
     note: Note,
     colors: Colors,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     Card(
         modifier = Modifier.fillMaxWidth().clickable { onClick() },
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(containerColor = colors.backgroundCard),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
-                    text = note.title, fontSize = 18.sp, fontWeight = FontWeight.Bold,
-                    color = colors.textPrimary, modifier = Modifier.weight(1f)
+                    text = note.title,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = colors.textPrimary,
+                    modifier = Modifier.weight(1f),
                 )
                 Icon(
                     imageVector = if (note.isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
                     contentDescription = "Favorite Icon",
                     tint = if (note.isFavorite) colors.error else colors.textSecondary,
-                    modifier = Modifier.size(20.dp)
+                    modifier = Modifier.size(20.dp),
                 )
             }
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = note.content, fontSize = 14.sp, color = colors.textSecondary,
-                maxLines = 2, overflow = TextOverflow.Ellipsis
+                text = note.content,
+                fontSize = 14.sp,
+                color = colors.textSecondary,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
             )
         }
     }
