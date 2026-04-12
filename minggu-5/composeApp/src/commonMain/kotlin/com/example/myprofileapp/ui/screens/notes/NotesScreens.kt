@@ -32,7 +32,7 @@ import com.example.myprofileapp.ui.components.profile.LabeledTextField
 import com.example.myprofileapp.ui.theme.Colors
 
 @Composable
-fun NoteListScreen(colors: Colors, onNavigateToDetail: (Int) -> Unit) {
+fun NoteListScreen(colors: Colors, onNavigateToDetail: (Int) -> Unit, onNavigateToAdd: () -> Unit) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(16.dp),
@@ -68,7 +68,12 @@ fun FavoritesScreen(colors: Colors, onNavigateToDetail: (Int) -> Unit) {
 }
 
 @Composable
-fun NoteDetailScreen(noteId: Int, colors: Colors, onNavigateToEdit: (Int) -> Unit) {
+fun NoteDetailScreen(
+    noteId: Int,
+    colors: Colors,
+    onNavigateToEdit: (Int) -> Unit,
+    onBack: () -> Unit
+) {
     val note = dummyNotes.find { it.id == noteId }
 
     if (note != null) {
@@ -129,7 +134,7 @@ fun AddNoteScreen(colors: Colors) {
 
         Spacer(modifier = Modifier.height(16.dp))
         Button(
-            onClick = { /* TODO: Logika simpan data ke depan */ },
+            onClick = { /* TODO: Logika simpan data */ },
             modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(
                 containerColor = colors.success,
@@ -166,7 +171,7 @@ fun EditNoteScreen(noteId: Int, colors: Colors) {
 
         Spacer(modifier = Modifier.height(16.dp))
         Button(
-            onClick = { /* TODO: Logika update data ke depan */ },
+            onClick = { /* TODO: Logika update data */ },
             modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(
                 containerColor = colors.accentSecondary,
