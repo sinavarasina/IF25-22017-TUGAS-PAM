@@ -29,9 +29,15 @@ fun Navigation(
         modifier = modifier
     ) {
         composable(Screen.Notes.route) {
-            NoteListScreen(colors = colors, onNavigateToDetail = { id ->
-                navController.navigate(Screen.NoteDetail.createRoute(id))
-            })
+            NoteListScreen(
+                colors = colors,
+                onNavigateToDetail = { id ->
+                    navController.navigate(Screen.NoteDetail.createRoute(id))
+                },
+                onNavigateToAdd = {
+                    navController.navigate(Screen.AddNote.route)
+                }
+            )
         }
         composable(Screen.Favorites.route) {
             FavoritesScreen(colors = colors, onNavigateToDetail = { id ->
@@ -54,9 +60,12 @@ fun Navigation(
                 NavType.IntType.get(bundle, "noteId")
             } ?: 0
 
-            NoteDetailScreen(noteId = id, colors = colors, onNavigateToEdit = { noteId ->
-                navController.navigate(Screen.EditNote.createRoute(noteId))
-            })
+            NoteDetailScreen(
+                noteId = id, colors = colors,
+                onNavigateToEdit = { noteId ->
+                    navController.navigate(Screen.EditNote.createRoute(noteId))
+                },
+                onBack = { navController.popBackStack() })
         }
         composable(
             route = Screen.EditNote.route,
@@ -67,7 +76,7 @@ fun Navigation(
                 NavType.IntType.get(bundle, "noteId")
             } ?: 0
 
-            EditNoteScreen(noteId = id, colors = colors)
+            EditNoteScreen(noteId = id, colors = colors, onBack = { navController.popBackStack() })
         }
     }
 }
