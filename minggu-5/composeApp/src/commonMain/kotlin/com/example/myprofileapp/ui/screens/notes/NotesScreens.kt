@@ -147,7 +147,7 @@ fun AddNoteScreen(colors: Colors) {
 }
 
 @Composable
-fun EditNoteScreen(noteId: Int, colors: Colors) {
+fun EditNoteScreen(noteId: Int, colors: Colors, onBack: () -> Unit) {
     val note = dummyNotes.find { it.id == noteId }
 
     var title by remember { mutableStateOf(note?.title ?: "") }
