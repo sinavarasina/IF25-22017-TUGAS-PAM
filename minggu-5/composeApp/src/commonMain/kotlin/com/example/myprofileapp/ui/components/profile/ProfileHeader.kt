@@ -19,7 +19,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.myprofileapp.ui.colors.Colors
+import com.example.myprofileapp.ui.theme.Colors
 import myprofileapp.composeapp.generated.resources.Res
 import myprofileapp.composeapp.generated.resources.nagato_yuki_pfp_noupscale_n3_s1
 import org.jetbrains.compose.resources.painterResource

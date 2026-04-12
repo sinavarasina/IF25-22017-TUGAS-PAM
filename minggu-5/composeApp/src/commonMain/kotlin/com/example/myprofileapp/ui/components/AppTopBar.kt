@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.myprofileapp.data.theme.ThemeMode
 import com.example.myprofileapp.data.theme.ThemeType
-import com.example.myprofileapp.ui.colors.Colors
+import com.example.myprofileapp.ui.theme.Colors
 
 @Composable
 fun AppTopBar(

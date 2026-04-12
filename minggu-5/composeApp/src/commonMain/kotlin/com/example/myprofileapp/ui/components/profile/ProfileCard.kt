@@ -10,7 +10,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.myprofileapp.ui.colors.Colors
+import com.example.myprofileapp.ui.theme.Colors
 
 @Composable
 fun ProfileCard(colors: Colors, content: @Composable () -> Unit) {

@@ -36,12 +36,12 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.myprofileapp.data.theme.ThemeMode
 import com.example.myprofileapp.data.theme.ThemeType
-import com.example.myprofileapp.ui.colors.Themes
 import com.example.myprofileapp.ui.components.AppTopBar
 import com.example.myprofileapp.ui.components.profile.EditProfileCard
 import com.example.myprofileapp.ui.components.profile.InfoItem
 import com.example.myprofileapp.ui.components.profile.ProfileCard
 import com.example.myprofileapp.ui.components.profile.ProfileHeader
+import com.example.myprofileapp.ui.theme.Themes
 import com.example.myprofileapp.viewmodel.profile.ProfileViewModel
 import com.example.myprofileapp.viewmodel.theme.ThemeViewModel
 

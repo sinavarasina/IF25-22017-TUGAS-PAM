@@ -1,7 +1,7 @@
-package com.example.myprofileapp.ui.colors.style.colorscheme.light
+package com.example.myprofileapp.ui.theme.style.colorscheme.light
 
 import androidx.compose.ui.graphics.Color
-import com.example.myprofileapp.ui.colors.style.colorscheme.GruvBoxPalette
+import com.example.myprofileapp.ui.theme.style.colorscheme.GruvBoxPalette
 
 val GruvBoxLight = GruvBoxPalette(
     bgHard = Color(0xFFF9F5D7),

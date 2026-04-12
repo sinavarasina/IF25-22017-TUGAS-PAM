@@ -1,7 +1,7 @@
-package com.example.myprofileapp.ui.colors.style.colorscheme.dark
+package com.example.myprofileapp.ui.theme.style.colorscheme.dark
 
 import androidx.compose.ui.graphics.Color
-import com.example.myprofileapp.ui.colors.style.colorscheme.CatppuccinPalette
+import com.example.myprofileapp.ui.theme.style.colorscheme.CatppuccinPalette
 
 val CatppuccinMocha = CatppuccinPalette(
     rosewater = Color(0xFFF5E0DC),
