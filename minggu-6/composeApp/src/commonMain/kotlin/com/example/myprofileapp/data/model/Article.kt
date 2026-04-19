@@ -1,4 +1,4 @@
-package com.example.myprofileapp.data.article
+package com.example.myprofileapp.data.model
 
 import kotlinx.serialization.Serializable
 
