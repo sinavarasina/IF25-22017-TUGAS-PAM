@@ -15,8 +15,10 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -26,23 +28,26 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.myprofileapp.data.notes.dummyNotes
 import com.example.myprofileapp.ui.components.notes.NoteCard
 import com.example.myprofileapp.ui.components.profile.LabeledTextField
 import com.example.myprofileapp.ui.theme.Colors
+import com.example.myprofileapp.viewmodel.notes.NotesViewModel
 
 @Composable
 fun NoteListScreen(
     colors: Colors,
+    notesViewModel: NotesViewModel,
     onNavigateToDetail: (Int) -> Unit,
     onNavigateToAdd: () -> Unit,
 ) {
+    val notes by notesViewModel.notes.collectAsState()
+
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        items(dummyNotes) { note ->
+        items(notes, key = { it.id }) { note ->
             NoteCard(
                 note = note,
                 colors = colors,
@@ -55,21 +60,29 @@ fun NoteListScreen(
 @Composable
 fun FavoritesScreen(
     colors: Colors,
+    notesViewModel: NotesViewModel,
     onNavigateToDetail: (Int) -> Unit,
 ) {
-    val favoriteNotes = dummyNotes.filter { it.isFavorite }
+    val notes by notesViewModel.notes.collectAsState()
+    val favoriteNotes = notes.filter { it.isFavorite }
 
-    LazyColumn(
-        modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(16.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
-    ) {
-        items(favoriteNotes) { note ->
-            NoteCard(
-                note = note,
-                colors = colors,
-                onClick = { onNavigateToDetail(note.id) },
-            )
+    if (favoriteNotes.isEmpty()) {
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Text("No favorites yet.", color = colors.textSecondary)
+        }
+    } else {
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            contentPadding = PaddingValues(16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            items(favoriteNotes, key = { it.id }) { note ->
+                NoteCard(
+                    note = note,
+                    colors = colors,
+                    onClick = { onNavigateToDetail(note.id) },
+                )
+            }
         }
     }
 }
@@ -78,10 +91,12 @@ fun FavoritesScreen(
 fun NoteDetailScreen(
     noteId: Int,
     colors: Colors,
+    notesViewModel: NotesViewModel,
     onNavigateToEdit: (Int) -> Unit,
     onBack: () -> Unit,
 ) {
-    val note = dummyNotes.find { it.id == noteId }
+    val notes by notesViewModel.notes.collectAsState()
+    val note = notes.find { it.id == noteId }
 
     if (note != null) {
         Column(
@@ -97,10 +112,28 @@ fun NoteDetailScreen(
                 fontWeight = FontWeight.Bold,
                 color = colors.textPrimary,
             )
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(text = note.content, fontSize = 16.sp, color = colors.textSecondary)
-
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = note.content,
+                fontSize = 16.sp,
+                color = colors.textSecondary,
+            )
             Spacer(modifier = Modifier.height(32.dp))
+
+            Button(
+                onClick = { notesViewModel.toggleFavorite(noteId) },
+                modifier = Modifier.fillMaxWidth(),
+                colors =
+                    ButtonDefaults.buttonColors(
+                        containerColor = if (note.isFavorite) colors.error else colors.success,
+                        contentColor = colors.backgroundMain,
+                    ),
+            ) {
+                Text(if (note.isFavorite) "Remove from Favorites" else "Add to Favorites")
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
             Button(
                 onClick = { onNavigateToEdit(noteId) },
                 modifier = Modifier.fillMaxWidth(),
@@ -112,6 +145,18 @@ fun NoteDetailScreen(
             ) {
                 Text("Edit Note")
             }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            OutlinedButton(
+                onClick = {
+                    notesViewModel.deleteNote(noteId)
+                    onBack()
+                },
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Text("Delete Note", color = colors.error)
+            }
         }
     } else {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -121,9 +166,14 @@ fun NoteDetailScreen(
 }
 
 @Composable
-fun AddNoteScreen(colors: Colors) {
+fun AddNoteScreen(
+    colors: Colors,
+    notesViewModel: NotesViewModel,
+    onBack: () -> Unit,
+) {
     var title by remember { mutableStateOf("") }
     var content by remember { mutableStateOf("") }
+    var showError by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier.fillMaxSize().padding(16.dp),
@@ -131,9 +181,21 @@ fun AddNoteScreen(colors: Colors) {
         LabeledTextField(
             label = "Title",
             value = title,
-            onValueChange = { title = it },
+            onValueChange = {
+                title = it
+                showError = false
+            },
             colors = colors,
         )
+
+        if (showError) {
+            Text(
+                text = "Title tidak boleh kosong",
+                color = colors.error,
+                fontSize = 12.sp,
+            )
+        }
+
         LabeledTextField(
             label = "Content",
             value = content,
@@ -142,8 +204,16 @@ fun AddNoteScreen(colors: Colors) {
         )
 
         Spacer(modifier = Modifier.height(16.dp))
+
         Button(
-            onClick = { /* TODO: Logika simpan data */ },
+            onClick = {
+                if (title.isBlank()) {
+                    showError = true
+                } else {
+                    notesViewModel.addNote(title, content)
+                    onBack()
+                }
+            },
             modifier = Modifier.fillMaxWidth(),
             colors =
                 ButtonDefaults.buttonColors(
@@ -160,12 +230,14 @@ fun AddNoteScreen(colors: Colors) {
 fun EditNoteScreen(
     noteId: Int,
     colors: Colors,
+    notesViewModel: NotesViewModel,
     onBack: () -> Unit,
 ) {
-    val note = dummyNotes.find { it.id == noteId }
+    val note = notesViewModel.getNoteById(noteId)
 
     var title by remember { mutableStateOf(note?.title ?: "") }
     var content by remember { mutableStateOf(note?.content ?: "") }
+    var showError by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier.fillMaxSize().padding(16.dp),
@@ -173,9 +245,21 @@ fun EditNoteScreen(
         LabeledTextField(
             label = "Title",
             value = title,
-            onValueChange = { title = it },
+            onValueChange = {
+                title = it
+                showError = false
+            },
             colors = colors,
         )
+
+        if (showError) {
+            Text(
+                text = "Title tidak boleh kosong",
+                color = colors.error,
+                fontSize = 12.sp,
+            )
+        }
+
         LabeledTextField(
             label = "Content",
             value = content,
@@ -184,8 +268,16 @@ fun EditNoteScreen(
         )
 
         Spacer(modifier = Modifier.height(16.dp))
+
         Button(
-            onClick = { /* TODO: Logika update data */ },
+            onClick = {
+                if (title.isBlank()) {
+                    showError = true
+                } else {
+                    notesViewModel.updateNote(noteId, title, content)
+                    onBack()
+                }
+            },
             modifier = Modifier.fillMaxWidth(),
             colors =
                 ButtonDefaults.buttonColors(
