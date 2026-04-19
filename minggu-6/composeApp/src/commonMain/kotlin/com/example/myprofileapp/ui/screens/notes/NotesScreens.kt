@@ -190,7 +190,7 @@ fun AddNoteScreen(
 
         if (showError) {
             Text(
-                text = "Title tidak boleh kosong",
+                text = "Title cant be empty",
                 color = colors.error,
                 fontSize = 12.sp,
             )
@@ -254,7 +254,7 @@ fun EditNoteScreen(
 
         if (showError) {
             Text(
-                text = "Title tidak boleh kosong",
+                text = "Title cant be empty",
                 color = colors.error,
                 fontSize = 12.sp,
             )

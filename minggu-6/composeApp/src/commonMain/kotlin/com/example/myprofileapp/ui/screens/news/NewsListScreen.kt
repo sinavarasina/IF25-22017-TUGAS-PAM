@@ -68,7 +68,7 @@ fun NewsListScreen(
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(
-                            text = "Gagal memuat berita",
+                            text = "Failed to load news",
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Bold,
                             color = colors.textPrimary,
@@ -84,7 +84,7 @@ fun NewsListScreen(
                             onClick = { viewModel.loadArticles() },
                             colors = ButtonDefaults.buttonColors(containerColor = colors.accentPrimary),
                         ) {
-                            Text("Coba Lagi", color = colors.backgroundMain)
+                            Text("Try again", color = colors.backgroundMain)
                         }
                     }
                 }
