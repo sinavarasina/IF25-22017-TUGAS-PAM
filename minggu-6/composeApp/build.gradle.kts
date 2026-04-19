@@ -1,5 +1,7 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
+val ktorVersion = "2.3.7"
+
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidApplication)
@@ -28,6 +30,7 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.compose.uiToolingPreview)
             implementation(libs.androidx.activity.compose)
+            implementation("io.ktor:ktor-client-android:$ktorVersion")
         }
         commonMain.dependencies {
             implementation(libs.compose.runtime)
@@ -40,6 +43,10 @@ kotlin {
             implementation(libs.androidx.lifecycle.runtimeCompose)
             implementation(compose.materialIconsExtended)
             implementation("org.jetbrains.androidx.navigation:navigation-compose:2.9.2")
+            implementation("io.ktor:ktor-client-core:$ktorVersion")
+            implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
+            implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+            implementation("io.ktor:ktor-client-logging:$ktorVersion")
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -85,5 +92,6 @@ android {
 
 dependencies {
     implementation(libs.navigation.compose)
+    implementation(libs.org.jetbrains.kotlin.plugin.serialization.gradle.plugin)
     debugImplementation(libs.compose.uiTooling)
 }
