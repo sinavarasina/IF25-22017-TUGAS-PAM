@@ -3,10 +3,9 @@ package com.example.myprofileapp.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
+import androidx.navigation.toRoute
 import com.example.myprofileapp.ui.screens.news.NewsDetailScreen
 import com.example.myprofileapp.ui.screens.news.NewsListScreen
 import com.example.myprofileapp.ui.screens.notes.AddNoteScreen
@@ -31,82 +30,66 @@ fun Navigation(
 ) {
     NavHost(
         navController = navController,
-        startDestination = Screen.NewsList.route,
+        startDestination = Screen.NewsList,
         modifier = modifier,
     ) {
-        composable(Screen.NewsList.route) {
+        composable<Screen.NewsList> {
             NewsListScreen(
                 viewModel = newsViewModel,
                 colors = colors,
-                onNavigateToDetail = { id -> navController.navigate(Screen.NewsDetail.createRoute(id)) },
+                onNavigateToDetail = { id -> navController.navigate(Screen.NewsDetail(id)) },
             )
         }
-        composable(
-            route = Screen.NewsDetail.route,
-            arguments = listOf(navArgument("articleId") { type = NavType.IntType }),
-        ) { backStackEntry ->
-            val id = backStackEntry.arguments?.let { NavType.IntType.get(it, "articleId") } ?: 0
-            NewsDetailScreen(articleId = id, viewModel = newsViewModel, colors = colors)
+
+        composable<Screen.NewsDetail> { backStackEntry ->
+            val args = backStackEntry.toRoute<Screen.NewsDetail>()
+            NewsDetailScreen(articleId = args.articleId, viewModel = newsViewModel, colors = colors)
         }
-        composable(Screen.Notes.route) {
+
+        composable<Screen.Notes> {
             NoteListScreen(
                 colors = colors,
                 notesViewModel = notesViewModel,
-                onNavigateToDetail = { id ->
-                    navController.navigate(Screen.NoteDetail.createRoute(id))
-                },
-                onNavigateToAdd = {
-                    navController.navigate(Screen.AddNote.route)
-                },
+                onNavigateToDetail = { id -> navController.navigate(Screen.NoteDetail(id)) },
+                onNavigateToAdd = { navController.navigate(Screen.AddNote) },
             )
         }
-        composable(Screen.Favorites.route) {
+
+        composable<Screen.Favorites> {
             FavoritesScreen(
                 colors = colors,
                 notesViewModel = notesViewModel,
-                onNavigateToDetail = { id ->
-                    navController.navigate(Screen.NoteDetail.createRoute(id))
-                },
+                onNavigateToDetail = { id -> navController.navigate(Screen.NoteDetail(id)) },
             )
         }
-        composable(Screen.Profile.route) {
+
+        composable<Screen.Profile> {
             ProfileScreen(profileViewModel = profileViewModel, colors = colors)
         }
-        composable(Screen.AddNote.route) {
+
+        composable<Screen.AddNote> {
             AddNoteScreen(
                 colors = colors,
                 notesViewModel = notesViewModel,
                 onBack = { navController.popBackStack() },
             )
         }
-        composable(
-            route = Screen.NoteDetail.route,
-            arguments = listOf(navArgument("noteId") { type = NavType.IntType }),
-        ) { backStackEntry ->
-            val id =
-                backStackEntry.arguments?.let { bundle ->
-                    NavType.IntType.get(bundle, "noteId")
-                } ?: 0
+
+        composable<Screen.NoteDetail> { backStackEntry ->
+            val args = backStackEntry.toRoute<Screen.NoteDetail>()
             NoteDetailScreen(
-                noteId = id,
+                noteId = args.noteId,
                 colors = colors,
                 notesViewModel = notesViewModel,
-                onNavigateToEdit = { noteId ->
-                    navController.navigate(Screen.EditNote.createRoute(noteId))
-                },
+                onNavigateToEdit = { id -> navController.navigate(Screen.EditNote(id)) },
                 onBack = { navController.popBackStack() },
             )
         }
-        composable(
-            route = Screen.EditNote.route,
-            arguments = listOf(navArgument("noteId") { type = NavType.IntType }),
-        ) { backStackEntry ->
-            val id =
-                backStackEntry.arguments?.let { bundle ->
-                    NavType.IntType.get(bundle, "noteId")
-                } ?: 0
+
+        composable<Screen.EditNote> { backStackEntry ->
+            val args = backStackEntry.toRoute<Screen.EditNote>()
             EditNoteScreen(
-                noteId = id,
+                noteId = args.noteId,
                 colors = colors,
                 notesViewModel = notesViewModel,
                 onBack = { navController.popBackStack() },

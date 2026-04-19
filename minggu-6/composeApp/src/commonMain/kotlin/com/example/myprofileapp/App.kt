@@ -16,6 +16,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.myprofileapp.data.theme.ThemeMode
@@ -49,27 +50,28 @@ fun App() {
     val colors = if (themeState.themeMode == ThemeMode.DARK) currentTheme.dark else currentTheme.light
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentRoute = navBackStackEntry?.destination?.route
+    val currentDestination = navBackStackEntry?.destination
 
-    val bottomNavRoutes =
-        listOf(
-            Screen.NewsList.route,
-            Screen.Notes.route,
-            Screen.Favorites.route,
-            Screen.Profile.route,
-        )
-    val showBottomNav = currentRoute in bottomNavRoutes
-    val showFab = currentRoute == Screen.Notes.route
+    val showBottomNav =
+        currentDestination?.let {
+            it.hasRoute<Screen.NewsList>() ||
+                it.hasRoute<Screen.Notes>() ||
+                it.hasRoute<Screen.Favorites>() ||
+                it.hasRoute<Screen.Profile>()
+        } == true
+
+    val showFab = currentDestination?.hasRoute<Screen.Notes>() == true
 
     val topBarTitle =
         when {
-            currentRoute == Screen.Notes.route -> "Notes"
-            currentRoute == Screen.Favorites.route -> "Favorites"
-            currentRoute == Screen.Profile.route -> "Profile"
-            currentRoute == Screen.AddNote.route -> "Add Note"
-            currentRoute == Screen.NewsList.route -> "News"
-            currentRoute?.startsWith("note_detail") == true -> "Note Detail"
-            currentRoute?.startsWith("edit_note") == true -> "Edit Note"
+            currentDestination?.hasRoute<Screen.Notes>() == true -> "Notes"
+            currentDestination?.hasRoute<Screen.Favorites>() == true -> "Favorites"
+            currentDestination?.hasRoute<Screen.Profile>() == true -> "Profile"
+            currentDestination?.hasRoute<Screen.AddNote>() == true -> "Add Note"
+            currentDestination?.hasRoute<Screen.NewsList>() == true -> "News"
+            currentDestination?.hasRoute<Screen.NoteDetail>() == true -> "Note Detail"
+            currentDestination?.hasRoute<Screen.EditNote>() == true -> "Edit Note"
+            currentDestination?.hasRoute<Screen.NewsDetail>() == true -> "News Detail"
             else -> "MyApp"
         }
 
@@ -83,7 +85,7 @@ fun App() {
                     themeMode = themeState.themeMode,
                     onThemeTypeChange = { themeViewModel.setThemeType(it) },
                     onThemeModeChange = { themeViewModel.setThemeMode(it) },
-                    showThemeControls = currentRoute == Screen.Profile.route,
+                    showThemeControls = currentDestination?.hasRoute<Screen.Profile>() == true,
                 )
             },
             bottomBar = {
@@ -98,7 +100,7 @@ fun App() {
                     exit = scaleOut(),
                 ) {
                     FloatingActionButton(
-                        onClick = { navController.navigate(Screen.AddNote.route) },
+                        onClick = { navController.navigate(Screen.AddNote) },
                         containerColor = colors.accentPrimary,
                         contentColor = colors.backgroundMain,
                     ) {

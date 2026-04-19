@@ -1,27 +1,27 @@
 package com.example.myprofileapp.navigation
 
-sealed class Screen(
-    val route: String,
-) {
-    object NewsList : Screen("news_list")
+import kotlinx.serialization.Serializable
 
-    object Notes : Screen("notes_list")
+sealed interface Screen {
+    @Serializable data object NewsList : Screen
 
-    object Favorites : Screen("favorites")
+    @Serializable data object Notes : Screen
 
-    object Profile : Screen("profile")
+    @Serializable data object Favorites : Screen
 
-    object AddNote : Screen("add_note")
+    @Serializable data object Profile : Screen
 
-    object NoteDetail : Screen("note_detail/{noteId}") {
-        fun createRoute(noteId: Int) = "note_detail/$noteId"
-    }
+    @Serializable data object AddNote : Screen
 
-    object EditNote : Screen("edit_note/{noteId}") {
-        fun createRoute(noteId: Int) = "edit_note/$noteId"
-    }
+    @Serializable data class NoteDetail(
+        val noteId: Int,
+    ) : Screen
 
-    object NewsDetail : Screen("news_detail/{articleId}") {
-        fun createRoute(id: Int) = "news_detail/$id"
-    }
+    @Serializable data class EditNote(
+        val noteId: Int,
+    ) : Screen
+
+    @Serializable data class NewsDetail(
+        val articleId: Int,
+    ) : Screen
 }

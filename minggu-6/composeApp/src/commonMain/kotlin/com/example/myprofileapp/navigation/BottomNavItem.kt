@@ -8,15 +8,15 @@ import androidx.compose.material.icons.filled.Public
 import androidx.compose.ui.graphics.vector.ImageVector
 
 sealed class BottomNavItem(
-    val route: String,
+    val route: Any,
     val icon: ImageVector,
     val title: String,
 ) {
-    object News : BottomNavItem(Screen.NewsList.route, Icons.Default.Public, "News")
+    object News : BottomNavItem(Screen.NewsList, Icons.Default.Public, "News")
 
-    object Notes : BottomNavItem(Screen.Notes.route, Icons.Default.List, "Notes")
+    object Notes : BottomNavItem(Screen.Notes, Icons.Default.List, "Notes")
 
-    object Favorites : BottomNavItem(Screen.Favorites.route, Icons.Default.Favorite, "Favorites")
+    object Favorites : BottomNavItem(Screen.Favorites, Icons.Default.Favorite, "Favorites")
 
-    object Profile : BottomNavItem(Screen.Profile.route, Icons.Default.Person, "Profile")
+    object Profile : BottomNavItem(Screen.Profile, Icons.Default.Person, "Profile")
 }

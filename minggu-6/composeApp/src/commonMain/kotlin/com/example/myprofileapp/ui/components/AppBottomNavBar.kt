@@ -8,6 +8,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.navigation.NavController
+import androidx.navigation.NavDestination.Companion.hasRoute
+import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.myprofileapp.navigation.BottomNavItem
 import com.example.myprofileapp.ui.theme.Colors
@@ -19,15 +22,17 @@ fun AppBottomBar(
 ) {
     val items = listOf(BottomNavItem.News, BottomNavItem.Notes, BottomNavItem.Favorites, BottomNavItem.Profile)
     val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentRoute = navBackStackEntry?.destination?.route
+    val currentDestination = navBackStackEntry?.destination
 
     NavigationBar(containerColor = colors.backgroundTopBar) {
         items.forEach { item ->
+            val isSelected = currentDestination?.hierarchy?.any { it.hasRoute(item.route::class) } == true
+
             NavigationBarItem(
-                selected = currentRoute == item.route,
+                selected = isSelected,
                 onClick = {
                     navController.navigate(item.route) {
-                        popUpTo(navController.graph.startDestinationId) { saveState = true }
+                        popUpTo(navController.graph.findStartDestination().id) { saveState = true }
                         launchSingleTop = true
                         restoreState = true
                     }
