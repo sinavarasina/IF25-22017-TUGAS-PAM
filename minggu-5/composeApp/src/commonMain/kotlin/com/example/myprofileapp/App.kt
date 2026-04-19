@@ -25,6 +25,7 @@ import com.example.myprofileapp.navigation.Screen
 import com.example.myprofileapp.ui.components.AppBottomBar
 import com.example.myprofileapp.ui.components.AppTopBar
 import com.example.myprofileapp.ui.theme.Themes
+import com.example.myprofileapp.viewmodel.notes.NotesViewModel
 import com.example.myprofileapp.viewmodel.profile.ProfileViewModel
 import com.example.myprofileapp.viewmodel.theme.ThemeViewModel
 
@@ -33,6 +34,7 @@ import com.example.myprofileapp.viewmodel.theme.ThemeViewModel
 fun App() {
     val themeViewModel: ThemeViewModel = viewModel()
     val profileViewModel: ProfileViewModel = viewModel()
+    val notesViewModel: NotesViewModel = viewModel()
     val navController = rememberNavController()
 
     val themeState by themeViewModel.themeState.collectAsState()
@@ -105,6 +107,7 @@ fun App() {
             Navigation(
                 navController = navController,
                 profileViewModel = profileViewModel,
+                notesViewModel = notesViewModel,
                 colors = colors,
                 modifier = Modifier.padding(innerPadding),
             )
