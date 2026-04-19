@@ -25,6 +25,7 @@ import com.example.myprofileapp.navigation.Screen
 import com.example.myprofileapp.ui.components.AppBottomBar
 import com.example.myprofileapp.ui.components.AppTopBar
 import com.example.myprofileapp.ui.theme.Themes
+import com.example.myprofileapp.viewmodel.news.NewsViewModel
 import com.example.myprofileapp.viewmodel.notes.NotesViewModel
 import com.example.myprofileapp.viewmodel.profile.ProfileViewModel
 import com.example.myprofileapp.viewmodel.theme.ThemeViewModel
@@ -35,6 +36,7 @@ fun App() {
     val themeViewModel: ThemeViewModel = viewModel()
     val profileViewModel: ProfileViewModel = viewModel()
     val notesViewModel: NotesViewModel = viewModel()
+    val newsViewModel: NewsViewModel = viewModel()
     val navController = rememberNavController()
 
     val themeState by themeViewModel.themeState.collectAsState()
@@ -51,6 +53,7 @@ fun App() {
 
     val bottomNavRoutes =
         listOf(
+            Screen.NewsList.route,
             Screen.Notes.route,
             Screen.Favorites.route,
             Screen.Profile.route,
@@ -64,6 +67,7 @@ fun App() {
             currentRoute == Screen.Favorites.route -> "Favorites"
             currentRoute == Screen.Profile.route -> "Profile"
             currentRoute == Screen.AddNote.route -> "Add Note"
+            currentRoute == Screen.NewsList.route -> "News"
             currentRoute?.startsWith("note_detail") == true -> "Note Detail"
             currentRoute?.startsWith("edit_note") == true -> "Edit Note"
             else -> "MyApp"
@@ -108,6 +112,7 @@ fun App() {
                 navController = navController,
                 profileViewModel = profileViewModel,
                 notesViewModel = notesViewModel,
+                newsViewModel = newsViewModel,
                 colors = colors,
                 modifier = Modifier.padding(innerPadding),
             )
