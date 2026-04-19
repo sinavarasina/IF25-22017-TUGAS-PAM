@@ -8,8 +8,8 @@ import kotlinx.serialization.json.Json
 
 class NewsRepository(
     private val api: NewsApi,
+    private val settings: Settings,
 ) {
-    private val settings = Settings()
     private val CACHE_KEY = "男の子の秘密"
 
     suspend fun getArticles(): Result<List<Article>> =

@@ -12,9 +12,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class NewsViewModel : ViewModel() {
-    private val repository = NewsRepository(NewsApi(HttpClientFactory.create()))
-
+class NewsViewModel(
+    private val repository: NewsRepository,
+) : ViewModel() {
     private val _articlesState = MutableStateFlow<UiState<List<Article>>>(UiState.Loading)
     val articlesState: StateFlow<UiState<List<Article>>> = _articlesState.asStateFlow()
 
