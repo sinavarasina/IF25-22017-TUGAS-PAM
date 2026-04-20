@@ -16,7 +16,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.myprofileapp.data.model.Article
+import com.example.myprofileapp.data.news.Article
 import com.example.myprofileapp.ui.theme.Colors
 
 @Composable

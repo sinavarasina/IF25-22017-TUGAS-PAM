@@ -1,7 +1,6 @@
-package com.example.myprofileapp.data.repository
+package com.example.myprofileapp.data.news
 
-import com.example.myprofileapp.data.model.Article
-import com.example.myprofileapp.data.remote.NewsApi
+import com.example.myprofileapp.data.news.NewsApi
 import com.russhwolf.settings.Settings
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -16,7 +15,7 @@ class NewsRepository(
         try {
             val freshArticles = api.getArticles()
 
-            val jsonString = Json.encodeToString(freshArticles)
+            val jsonString = Json.Default.encodeToString(freshArticles)
             settings.putString(CACHE_KEY, jsonString)
 
             Result.success(freshArticles)
@@ -24,7 +23,7 @@ class NewsRepository(
             val cachedJson = settings.getStringOrNull(CACHE_KEY)
 
             if (cachedJson != null) {
-                val cachedArticles = Json.decodeFromString<List<Article>>(cachedJson)
+                val cachedArticles = Json.Default.decodeFromString<List<Article>>(cachedJson)
                 Result.success(cachedArticles)
             } else {
                 Result.failure(Exception("No internet and no cached data."))
@@ -37,7 +36,7 @@ class NewsRepository(
         } catch (e: Exception) {
             val cachedJson = settings.getStringOrNull(CACHE_KEY)
             if (cachedJson != null) {
-                val cachedArticles = Json.decodeFromString<List<Article>>(cachedJson)
+                val cachedArticles = Json.Default.decodeFromString<List<Article>>(cachedJson)
                 val article = cachedArticles.find { it.id == id }
 
                 if (article != null) {

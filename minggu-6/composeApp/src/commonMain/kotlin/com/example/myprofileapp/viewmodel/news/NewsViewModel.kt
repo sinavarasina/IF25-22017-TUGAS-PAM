@@ -3,10 +3,10 @@ package com.example.myprofileapp.viewmodel.news
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myprofileapp.data.common.UiState
-import com.example.myprofileapp.data.model.Article
-import com.example.myprofileapp.data.remote.HttpClientFactory
-import com.example.myprofileapp.data.remote.NewsApi
-import com.example.myprofileapp.data.repository.NewsRepository
+import com.example.myprofileapp.data.news.Article
+import com.example.myprofileapp.data.news.HttpClientFactory
+import com.example.myprofileapp.data.news.NewsApi
+import com.example.myprofileapp.data.news.NewsRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

@@ -1,4 +1,4 @@
-package com.example.myprofileapp.data.remote
+package com.example.myprofileapp.data.news
 
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -10,7 +10,7 @@ import kotlinx.serialization.json.Json
 object HttpClientFactory {
     fun create(): HttpClient =
         HttpClient {
-            install(ContentNegotiation) {
+            install(ContentNegotiation.Plugin) {
                 json(
                     Json {
                         prettyPrint = true
@@ -19,7 +19,7 @@ object HttpClientFactory {
                     },
                 )
             }
-            install(Logging) {
+            install(Logging.Companion) {
                 level = LogLevel.BODY
             }
         }
