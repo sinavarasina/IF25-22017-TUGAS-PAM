@@ -14,10 +14,11 @@ Class = PAM RA
 ## Media
 
 ### Video
-[![Demo](media/gif/gif6.0.gif)](record6.0.mp4)
+[![Demo](media/gif/gif6.0.gif)](media/video/record6.0.mp4)
 > click the gif image to see the highres video.
 
 ## Screenshoot
+> maybe later
 
 ## Code Documentation
 
