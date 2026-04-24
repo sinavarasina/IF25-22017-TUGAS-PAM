@@ -18,13 +18,12 @@ Class = PAM RA
 
 ### Video
 
-<!--
-[](TBA)
+[![demo](media/gif/gif5.0.gif)](media/video/record5.0.mp4)
 
 > click the image to see the highres one
--->
 
 ## Screenshoot
+> its all in the gif/video, ig SS is not really needed, but just make issue if it needed, i will upload soon.
 
 ## Code Documentation
 
