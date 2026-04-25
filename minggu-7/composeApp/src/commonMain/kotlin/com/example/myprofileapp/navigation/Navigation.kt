@@ -37,7 +37,7 @@ fun Navigation(
 ) {
     NavHost(
         navController = navController,
-        startDestination = Screen.NewsList,
+        startDestination = Screen.Notes,
         modifier = modifier,
     ) {
         composable<Screen.NewsList> {
