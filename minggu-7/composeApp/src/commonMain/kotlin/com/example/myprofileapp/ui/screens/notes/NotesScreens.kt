@@ -41,18 +41,65 @@ fun NoteListScreen(
     onNavigateToAdd: () -> Unit,
 ) {
     val notes by notesViewModel.notes.collectAsState()
+    val searchQuery by notesViewModel.searchQuery.collectAsState()
+    val sortOrder by notesViewModel.sortOrder.collectAsState()
 
-    LazyColumn(
-        modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(16.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
-    ) {
-        items(notes, key = { it.id }) { note ->
-            NoteCard(
-                note = note,
-                colors = colors,
-                onClick = { onNavigateToDetail(note.id) },
-            )
+    Column(modifier = Modifier.fillMaxSize()) {
+        NoteSearchBar(
+            query = searchQuery,
+            onQueryChange = { notesViewModel.setSearchQuery(it) },
+            colors = colors,
+        )
+
+        Row(
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.End,
+        ) {
+            TextButton(onClick = {
+                val newOrder =
+                    if (sortOrder == SortOrder.BY_DATE) {
+                        SortOrder.BY_TITLE
+                    } else {
+                        SortOrder.BY_DATE
+                    }
+                notesViewModel.setSortOrder(newOrder)
+            }) {
+                Text(
+                    text = if (sortOrder == SortOrder.BY_DATE) "Sort: Newest" else "Sort: A-Z",
+                    color = colors.accentPrimary,
+                )
+            }
+        }
+
+        if (notes.isEmpty()) {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                Text(
+                    text =
+                        if (searchQuery.isNotBlank()) {
+                            "No Result for \"$searchQuery\""
+                        } else {
+                            "No Notes."
+                        },
+                    color = colors.textSecondary,
+                )
+            }
+        } else {
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                contentPadding = PaddingValues(16.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+            ) {
+                items(notes, key = { it.id }) { note ->
+                    NoteCard(
+                        note = note,
+                        colors = colors,
+                        onClick = { onNavigateToDetail(note.id) },
+                    )
+                }
+            }
         }
     }
 }
