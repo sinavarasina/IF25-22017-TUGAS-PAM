@@ -5,6 +5,7 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Public
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.ui.graphics.vector.ImageVector
 
 sealed class BottomNavItem(
@@ -19,4 +20,6 @@ sealed class BottomNavItem(
     object Favorites : BottomNavItem(Screen.Favorites, Icons.Default.Favorite, "Favorites")
 
     object Profile : BottomNavItem(Screen.Profile, Icons.Default.Person, "Profile")
+
+    object Settings : BottomNavItem(Screen.Settings, Icons.Default.Settings, "Settings")
 }
