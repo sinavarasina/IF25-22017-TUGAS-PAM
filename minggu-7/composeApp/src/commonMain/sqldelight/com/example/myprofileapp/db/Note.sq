@@ -10,7 +10,7 @@ CREATE TABLE NoteEntity (
 selectAll:
 SELECT * FROM NoteEntity ORDER BY updated_at DESC;
 
-selectAllSortedByTitle:
+selectAllByTitle:
 SELECT * FROM NoteEntity ORDER BY title ASC;
 
 selectFavorites:

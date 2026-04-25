@@ -11,7 +11,7 @@ import kotlinx.coroutines.withContext
 class NoteRepository(
     private val database: NotesDatabase,
 ) {
-    private val queries = database.noteEntityQueries
+    private val queries = database.noteQueries
 
     private fun com.example.myprofileapp.db.NoteEntity.toDomain() =
         Note(
