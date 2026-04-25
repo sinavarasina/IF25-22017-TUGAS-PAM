@@ -87,6 +87,7 @@ fun App() {
     val colors = if (isDark) currentTheme.dark else currentTheme.light
 
     val colorScheme = if (isDark) darkColorScheme() else lightColorScheme()
+    SystemAppearance(isDark = isDark, statusBarColor = colors.backgroundTopBar)
 
     MaterialTheme(colorScheme = colorScheme) {
         Scaffold(
