@@ -44,6 +44,20 @@ class NoteRepository(
             .map { it.map { entity -> entity.toDomain() } }
     }
 
+    fun getAllNotesOldest(): Flow<List<Note>> =
+        queries
+            .selectAllOldest()
+            .asFlow()
+            .mapToList(Dispatchers.IO)
+            .map { it.map { entity -> entity.toDomain() } }
+
+    fun getAllNotesByTitleDesc(): Flow<List<Note>> =
+        queries
+            .selectAllByTitleDesc()
+            .asFlow()
+            .mapToList(Dispatchers.IO)
+            .map { it.map { entity -> entity.toDomain() } }
+
     suspend fun getNoteById(id: Int): Note? =
         withContext(Dispatchers.IO) {
             queries.selectById(id.toLong()).executeAsOneOrNull()?.toDomain()

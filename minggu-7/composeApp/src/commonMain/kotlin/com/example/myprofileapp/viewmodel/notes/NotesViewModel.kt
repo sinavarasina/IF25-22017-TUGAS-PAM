@@ -6,7 +6,6 @@ import com.example.myprofileapp.data.notes.Note
 import com.example.myprofileapp.data.notes.NoteRepository
 import com.example.myprofileapp.data.settings.SettingsManager
 import com.example.myprofileapp.data.settings.SortOrder
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -26,14 +25,18 @@ class NotesViewModel(
     private val _sortOrder = MutableStateFlow(settingsManager.sortOrder)
     val sortOrder: StateFlow<SortOrder> = _sortOrder.asStateFlow()
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     val notes: StateFlow<List<Note>> =
-        combine(_searchQuery, _sortOrder) { query, sort -> query to sort }
+        combine(_searchQuery, _sortOrder) { query, sort -> Pair(query, sort) }
             .flatMapLatest { (query, sort) ->
-                when {
-                    query.isNotBlank() -> repository.searchNotes(query)
-                    sort == SortOrder.BY_TITLE -> repository.getAllNotesByTitle()
-                    else -> repository.getAllNotes()
+                if (query.isNotBlank()) {
+                    repository.searchNotes(query)
+                } else {
+                    when (sort) {
+                        SortOrder.TITLE_ASC -> repository.getAllNotesByTitle()
+                        SortOrder.TITLE_DESC -> repository.getAllNotesByTitleDesc()
+                        SortOrder.DATE_DESC -> repository.getAllNotes()
+                        SortOrder.DATE_ASC -> repository.getAllNotesOldest()
+                    }
                 }
             }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 

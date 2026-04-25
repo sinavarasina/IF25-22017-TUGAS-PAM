@@ -1,5 +1,6 @@
 package com.example.myprofileapp.ui.screens.notes
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,6 +17,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -32,7 +35,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.myprofileapp.data.settings.SortOrder
 import com.example.myprofileapp.ui.components.notes.NoteCard
-import com.example.myprofileapp.ui.components.notes.NoteSearchBar
 import com.example.myprofileapp.ui.components.profile.LabeledTextField
 import com.example.myprofileapp.ui.theme.Colors
 import com.example.myprofileapp.viewmodel.notes.NotesViewModel
@@ -48,6 +50,8 @@ fun NoteListScreen(
     val searchQuery by notesViewModel.searchQuery.collectAsState()
     val sortOrder by notesViewModel.sortOrder.collectAsState()
 
+    var isSortMenuExpanded by remember { mutableStateOf(false) }
+
     Column(modifier = Modifier.fillMaxSize()) {
         Row(
             modifier =
@@ -56,31 +60,53 @@ fun NoteListScreen(
                     .padding(horizontal = 16.dp),
             horizontalArrangement = Arrangement.End,
         ) {
-            TextButton(onClick = {
-                val newOrder =
-                    if (sortOrder == SortOrder.BY_DATE) {
-                        SortOrder.BY_TITLE
-                    } else {
-                        SortOrder.BY_DATE
+            Box {
+                TextButton(onClick = { isSortMenuExpanded = true }) {
+                    val sortText =
+                        when (sortOrder) {
+                            SortOrder.DATE_DESC -> "Newest"
+                            SortOrder.DATE_ASC -> "Oldest"
+                            SortOrder.TITLE_ASC -> "A-Z"
+                            SortOrder.TITLE_DESC -> "Z-A"
+                        }
+                    Text(text = "Sort: $sortText", color = colors.accentPrimary)
+                }
+
+                DropdownMenu(
+                    expanded = isSortMenuExpanded,
+                    onDismissRequest = { isSortMenuExpanded = false },
+                    modifier = Modifier.background(colors.backgroundCard),
+                ) {
+                    SortOrder.entries.forEach { order ->
+                        DropdownMenuItem(
+                            text = {
+                                val label =
+                                    when (order) {
+                                        SortOrder.DATE_DESC -> "Newest First"
+                                        SortOrder.DATE_ASC -> "Oldest First"
+                                        SortOrder.TITLE_ASC -> "Title (A-Z)"
+                                        SortOrder.TITLE_DESC -> "Title (Z-A)"
+                                    }
+                                Text(
+                                    text = label,
+                                    color = colors.textPrimary,
+                                    fontWeight = if (order == sortOrder) FontWeight.Bold else FontWeight.Normal,
+                                )
+                            },
+                            onClick = {
+                                notesViewModel.setSortOrder(order)
+                                isSortMenuExpanded = false
+                            },
+                        )
                     }
-                notesViewModel.setSortOrder(newOrder)
-            }) {
-                Text(
-                    text = if (sortOrder == SortOrder.BY_DATE) "Sort: Newest" else "Sort: A-Z",
-                    color = colors.accentPrimary,
-                )
+                }
             }
         }
 
         if (notes.isEmpty()) {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 Text(
-                    text =
-                        if (searchQuery.isNotBlank()) {
-                            "No Result for \"$searchQuery\""
-                        } else {
-                            "No Notes."
-                        },
+                    text = if (searchQuery.isNotBlank()) "No Result for \"$searchQuery\"" else "No Notes.",
                     color = colors.textSecondary,
                 )
             }

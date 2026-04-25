@@ -11,7 +11,13 @@ selectAll:
 SELECT * FROM NoteEntity ORDER BY updated_at DESC;
 
 selectAllByTitle:
-SELECT * FROM NoteEntity ORDER BY title ASC;
+SELECT * FROM NoteEntity ORDER BY title COLLATE NOCASE ASC;
+
+selectAllOldest:
+SELECT * FROM NoteEntity ORDER BY updated_at ASC;
+
+selectAllByTitleDesc:
+SELECT * FROM NoteEntity ORDER BY title COLLATE NOCASE DESC;
 
 selectFavorites:
 SELECT * FROM NoteEntity WHERE is_favorite = 1 ORDER BY updated_at DESC;

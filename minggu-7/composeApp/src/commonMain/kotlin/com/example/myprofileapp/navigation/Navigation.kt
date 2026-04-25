@@ -105,6 +105,7 @@ fun Navigation(
         composable<Screen.Settings> {
             SettingsScreen(
                 settingsManager = settingsManager,
+                notesViewModel = notesViewModel,
                 colors = colors,
                 onThemeTypeChange = onThemeTypeChange,
                 onThemeModeChange = onThemeModeChange,

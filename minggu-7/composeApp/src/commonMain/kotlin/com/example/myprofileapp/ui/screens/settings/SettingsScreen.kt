@@ -9,30 +9,28 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.myprofileapp.data.settings.SettingsManager
-import com.example.myprofileapp.data.settings.SortOrder
 import com.example.myprofileapp.data.theme.ThemeMode
 import com.example.myprofileapp.data.theme.ThemeType
 import com.example.myprofileapp.ui.components.profile.ProfileCard
 import com.example.myprofileapp.ui.theme.Colors
+import com.example.myprofileapp.viewmodel.notes.NotesViewModel
 
 @Composable
 fun SettingsScreen(
     settingsManager: SettingsManager,
+    notesViewModel: NotesViewModel,
     colors: Colors,
     onThemeTypeChange: (ThemeType) -> Unit,
     onThemeModeChange: (ThemeMode) -> Unit,
 ) {
     Column(
-        modifier =
-            Modifier
-                .fillMaxSize()
-                .padding(16.dp),
+        modifier = Modifier.fillMaxSize().padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         ProfileCard(colors = colors) {
             Text("Theme", fontWeight = FontWeight.Bold, color = colors.textPrimary, fontSize = 16.sp)
 
-            ThemeType.values().forEach { type ->
+            ThemeType.entries.forEach { type ->
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
@@ -67,26 +65,6 @@ fun SettingsScreen(
                             checkedThumbColor = colors.backgroundMain,
                         ),
                 )
-            }
-        }
-
-        ProfileCard(colors = colors) {
-            Text("Notes Sort", fontWeight = FontWeight.Bold, color = colors.textPrimary, fontSize = 16.sp)
-
-            SortOrder.values().forEach { order ->
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    RadioButton(
-                        selected = settingsManager.sortOrder == order,
-                        onClick = { settingsManager.sortOrder = order },
-                    )
-                    Text(
-                        text = if (order == SortOrder.BY_DATE) "Newest First" else "A-Z Title",
-                        color = colors.textPrimary,
-                    )
-                }
             }
         }
     }
