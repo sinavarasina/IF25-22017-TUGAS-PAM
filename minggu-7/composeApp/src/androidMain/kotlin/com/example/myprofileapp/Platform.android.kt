@@ -7,3 +7,7 @@ class AndroidPlatform : Platform {
 }
 
 actual fun getPlatform(): Platform = AndroidPlatform()
+
+lateinit var appContext: Context
+
+actual fun createDatabaseDriver(): SqlDriver = AndroidSqliteDriver(NotesDatabase.Schema, appContext, "notes.db")
