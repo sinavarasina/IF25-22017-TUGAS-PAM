@@ -13,8 +13,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -23,8 +25,11 @@ import androidx.navigation.compose.rememberNavController
 import com.example.myprofileapp.data.news.HttpClientFactory
 import com.example.myprofileapp.data.news.NewsApi
 import com.example.myprofileapp.data.news.NewsRepository
+import com.example.myprofileapp.data.notes.NoteRepository
+import com.example.myprofileapp.data.settings.SettingsManager
 import com.example.myprofileapp.data.theme.ThemeMode
 import com.example.myprofileapp.data.theme.ThemeType
+import com.example.myprofileapp.db.NotesDatabase
 import com.example.myprofileapp.navigation.Navigation
 import com.example.myprofileapp.navigation.Screen
 import com.example.myprofileapp.ui.components.AppBottomBar
@@ -42,8 +47,16 @@ import com.russhwolf.settings.Settings
 fun App() {
     val themeViewModel: ThemeViewModel = viewModel()
     val profileViewModel: ProfileViewModel = viewModel()
-    val notesViewModel: NotesViewModel = viewModel()
-
+    val settingsManager = remember { SettingsManager(Settings()) }
+    val notesViewModel: NotesViewModel =
+        viewModel {
+            val driver = createDatabaseDriver()
+            val db = NotesDatabase(driver)
+            NotesViewModel(
+                repository = NoteRepository(db),
+                settingsManager = settingsManager,
+            )
+        }
     val newsViewModel: NewsViewModel =
         viewModel {
             val repository =
@@ -53,6 +66,11 @@ fun App() {
                 )
             NewsViewModel(repository)
         }
+
+    LaunchedEffect(Unit) {
+        themeViewModel.setThemeType(settingsManager.themeType)
+        themeViewModel.setThemeMode(settingsManager.themeMode)
+    }
 
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -109,6 +127,9 @@ fun App() {
                 profileViewModel = profileViewModel,
                 notesViewModel = notesViewModel,
                 newsViewModel = newsViewModel,
+                settingsManager = settingsManager,
+                onThemeTypeChange = { themeViewModel.setThemeType(it) },
+                onThemeModeChange = { themeViewModel.setThemeMode(it) },
                 colors = colors,
                 modifier = Modifier.padding(innerPadding),
             )
