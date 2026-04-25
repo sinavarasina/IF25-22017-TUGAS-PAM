@@ -1,29 +1,56 @@
 package com.example.myprofileapp.viewmodel.notes
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.myprofileapp.data.notes.Note
-import com.example.myprofileapp.data.notes.dummyNotes
+import com.example.myprofileapp.data.notes.NoteRepository
+import com.example.myprofileapp.data.settings.SettingsManager
+import com.example.myprofileapp.data.settings.SortOrder
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
-class NotesViewModel : ViewModel() {
-    private val _notes = MutableStateFlow(dummyNotes)
-    val notes: StateFlow<List<Note>> = _notes.asStateFlow()
+class NotesViewModel(
+    private val repository: NoteRepository,
+    private val settingsManager: SettingsManager,
+) : ViewModel() {
+    private val _searchQuery = MutableStateFlow("")
+    val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
+
+    private val _sortOrder = MutableStateFlow(settingsManager.sortOrder)
+    val sortOrder: StateFlow<SortOrder> = _sortOrder.asStateFlow()
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val notes: StateFlow<List<Note>> =
+        combine(_searchQuery, _sortOrder) { query, sort -> query to sort }
+            .flatMapLatest { (query, sort) ->
+                when {
+                    query.isNotBlank() -> repository.searchNotes(query)
+                    sort == SortOrder.BY_TITLE -> repository.getAllNotesByTitle()
+                    else -> repository.getAllNotes()
+                }
+            }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+
+    fun setSearchQuery(query: String) {
+        _searchQuery.value = query
+    }
+
+    fun setSortOrder(order: SortOrder) {
+        _sortOrder.value = order
+        settingsManager.sortOrder = order
+    }
 
     fun addNote(
         title: String,
         content: String,
     ) {
-        val newNote =
-            Note(
-                id = (_notes.value.maxOfOrNull { it.id } ?: 0) + 1,
-                title = title,
-                content = content,
-                isFavorite = false,
-            )
-        _notes.update { it + newNote }
+        viewModelScope.launch { repository.insertNote(title, content) }
     }
 
     fun updateNote(
@@ -31,20 +58,19 @@ class NotesViewModel : ViewModel() {
         title: String,
         content: String,
     ) {
-        _notes.update { notes ->
-            notes.map { if (it.id == id) it.copy(title = title, content = content) else it }
-        }
+        viewModelScope.launch { repository.updateNote(id, title, content) }
     }
 
     fun toggleFavorite(id: Int) {
-        _notes.update { notes ->
-            notes.map { if (it.id == id) it.copy(isFavorite = !it.isFavorite) else it }
+        viewModelScope.launch {
+            val note = notes.value.find { it.id == id } ?: return@launch
+            repository.toggleFavorite(id, note.isFavorite)
         }
     }
 
     fun deleteNote(id: Int) {
-        _notes.update { notes -> notes.filter { it.id != id } }
+        viewModelScope.launch { repository.deleteNote(id) }
     }
 
-    fun getNoteById(id: Int): Note? = _notes.value.find { it.id == id }
+    fun getNoteById(id: Int): Note? = notes.value.find { it.id == id }
 }
