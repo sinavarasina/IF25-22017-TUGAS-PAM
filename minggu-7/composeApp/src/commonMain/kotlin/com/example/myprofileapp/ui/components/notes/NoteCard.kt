@@ -16,6 +16,7 @@ import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -32,6 +33,7 @@ fun NoteCard(
     note: Note,
     colors: Colors,
     onClick: () -> Unit,
+    onFavoriteClick: () -> Unit,
 ) {
     Card(
         modifier = Modifier.fillMaxWidth().clickable { onClick() },
@@ -52,12 +54,17 @@ fun NoteCard(
                     color = colors.textPrimary,
                     modifier = Modifier.weight(1f),
                 )
-                Icon(
-                    imageVector = if (note.isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
-                    contentDescription = "Favorite Icon",
-                    tint = if (note.isFavorite) colors.error else colors.textSecondary,
-                    modifier = Modifier.size(20.dp),
-                )
+                IconButton(
+                    onClick = onFavoriteClick,
+                    modifier = Modifier.size(28.dp),
+                ) {
+                    Icon(
+                        imageVector = if (note.isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                        contentDescription = "Favorite Icon",
+                        tint = if (note.isFavorite) colors.error else colors.textSecondary,
+                        modifier = Modifier.size(24.dp),
+                    )
+                }
             }
             Spacer(modifier = Modifier.height(8.dp))
             Text(

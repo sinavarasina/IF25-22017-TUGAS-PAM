@@ -11,6 +11,7 @@ data class AppNavState(
     val showFab: Boolean,
     val topBarTitle: String,
     val showThemeControls: Boolean,
+    val showSearchBar: Boolean,
 )
 
 @Composable
@@ -27,6 +28,7 @@ fun rememberAppNavigationState(currentDestination: NavDestination?): AppNavState
                 } == true,
             showFab = currentDestination?.hasRoute<Screen.Notes>() == true,
             showThemeControls = false, // because its already in the setting so i disable it globally
+            showSearchBar = currentDestination?.hasRoute<Screen.Notes>() == true,
             topBarTitle =
                 when {
                     currentDestination?.hasRoute<Screen.NewsList>() == true -> "News"

@@ -77,6 +77,7 @@ fun App() {
     val appState = rememberAppNavigationState(navBackStackEntry?.destination)
 
     val themeState by themeViewModel.themeState.collectAsState()
+    val searchQuery by notesViewModel.searchQuery.collectAsState()
     val isDark = themeState.themeMode == ThemeMode.DARK
     val currentTheme =
         when (themeState.activeThemeType) {
@@ -98,6 +99,9 @@ fun App() {
                     onThemeTypeChange = { themeViewModel.setThemeType(it) },
                     onThemeModeChange = { themeViewModel.setThemeMode(it) },
                     showThemeControls = appState.showThemeControls,
+                    showSearchBar = appState.showSearchBar,
+                    searchQuery = searchQuery,
+                    onSearchQueryChange = { notesViewModel.setSearchQuery(it) },
                 )
             },
             bottomBar = {

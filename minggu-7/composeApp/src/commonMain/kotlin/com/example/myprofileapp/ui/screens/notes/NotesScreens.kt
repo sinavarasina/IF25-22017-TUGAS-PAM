@@ -49,12 +49,6 @@ fun NoteListScreen(
     val sortOrder by notesViewModel.sortOrder.collectAsState()
 
     Column(modifier = Modifier.fillMaxSize()) {
-        NoteSearchBar(
-            query = searchQuery,
-            onQueryChange = { notesViewModel.setSearchQuery(it) },
-            colors = colors,
-        )
-
         Row(
             modifier =
                 Modifier
@@ -101,6 +95,7 @@ fun NoteListScreen(
                         note = note,
                         colors = colors,
                         onClick = { onNavigateToDetail(note.id) },
+                        onFavoriteClick = { notesViewModel.toggleFavorite(note.id) },
                     )
                 }
             }
@@ -132,6 +127,7 @@ fun FavoritesScreen(
                     note = note,
                     colors = colors,
                     onClick = { onNavigateToDetail(note.id) },
+                    onFavoriteClick = { notesViewModel.toggleFavorite(note.id) },
                 )
             }
         }
