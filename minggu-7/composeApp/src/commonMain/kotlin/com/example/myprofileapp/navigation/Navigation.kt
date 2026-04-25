@@ -6,6 +6,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
+import com.example.myprofileapp.data.settings.SettingsManager
+import com.example.myprofileapp.data.theme.ThemeMode
+import com.example.myprofileapp.data.theme.ThemeType
 import com.example.myprofileapp.ui.screens.news.NewsDetailScreen
 import com.example.myprofileapp.ui.screens.news.NewsListScreen
 import com.example.myprofileapp.ui.screens.notes.AddNoteScreen
@@ -14,6 +17,7 @@ import com.example.myprofileapp.ui.screens.notes.FavoritesScreen
 import com.example.myprofileapp.ui.screens.notes.NoteDetailScreen
 import com.example.myprofileapp.ui.screens.notes.NoteListScreen
 import com.example.myprofileapp.ui.screens.profile.ProfileScreen
+import com.example.myprofileapp.ui.screens.settings.SettingsScreen
 import com.example.myprofileapp.ui.theme.Colors
 import com.example.myprofileapp.viewmodel.news.NewsViewModel
 import com.example.myprofileapp.viewmodel.notes.NotesViewModel
@@ -25,6 +29,9 @@ fun Navigation(
     profileViewModel: ProfileViewModel,
     notesViewModel: NotesViewModel,
     newsViewModel: NewsViewModel,
+    settingsManager: SettingsManager,
+    onThemeTypeChange: (ThemeType) -> Unit,
+    onThemeModeChange: (ThemeMode) -> Unit,
     colors: Colors,
     modifier: Modifier = Modifier,
 ) {
@@ -93,6 +100,14 @@ fun Navigation(
                 colors = colors,
                 notesViewModel = notesViewModel,
                 onBack = { navController.popBackStack() },
+            )
+        }
+        composable<Screen.Settings> {
+            SettingsScreen(
+                settingsManager = settingsManager,
+                colors = colors,
+                onThemeTypeChange = onThemeTypeChange,
+                onThemeModeChange = onThemeModeChange,
             )
         }
     }

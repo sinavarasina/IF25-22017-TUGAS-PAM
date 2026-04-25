@@ -11,6 +11,8 @@ sealed interface Screen {
 
     @Serializable data object Profile : Screen
 
+    @Serializable data object Settings : Screen
+
     @Serializable data object AddNote : Screen
 
     @Serializable data class NoteDetail(

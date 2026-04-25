@@ -22,10 +22,11 @@ fun rememberAppNavigationState(currentDestination: NavDestination?): AppNavState
                     it.hasRoute<Screen.NewsList>() ||
                         it.hasRoute<Screen.Notes>() ||
                         it.hasRoute<Screen.Favorites>() ||
-                        it.hasRoute<Screen.Profile>()
+                        it.hasRoute<Screen.Profile>() ||
+                        it.hasRoute<Screen.Settings>()
                 } == true,
             showFab = currentDestination?.hasRoute<Screen.Notes>() == true,
-            showThemeControls = currentDestination?.hasRoute<Screen.Profile>() == true,
+            showThemeControls = false, // because its already in the setting so i disable it globally
             topBarTitle =
                 when {
                     currentDestination?.hasRoute<Screen.NewsList>() == true -> "News"
@@ -36,6 +37,7 @@ fun rememberAppNavigationState(currentDestination: NavDestination?): AppNavState
                     currentDestination?.hasRoute<Screen.NoteDetail>() == true -> "Note Detail"
                     currentDestination?.hasRoute<Screen.EditNote>() == true -> "Edit Note"
                     currentDestination?.hasRoute<Screen.NewsDetail>() == true -> "News Detail"
+                    currentDestination?.hasRoute<Screen.Settings>() == true -> "Settings"
                     else -> "MyApp"
                 },
         )
