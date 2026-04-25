@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     kotlin("plugin.serialization") version "1.9.22"
+    id("app.cash.sqldelight") version "2.0.1"
 }
 
 kotlin {
@@ -29,6 +30,7 @@ kotlin {
             implementation(libs.compose.uiToolingPreview)
             implementation(libs.androidx.activity.compose)
             implementation("io.ktor:ktor-client-android:$ktorVersion")
+            implementation("app.cash.sqldelight:android-driver:2.0.1")
         }
         commonMain.dependencies {
             implementation(libs.compose.runtime)
@@ -46,9 +48,14 @@ kotlin {
             implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
             implementation("io.ktor:ktor-client-logging:$ktorVersion")
             implementation("com.russhwolf:multiplatform-settings-no-arg:1.2.0")
+            implementation("app.cash.sqldelight:runtime:2.0.1")
+            implementation("app.cash.sqldelight:coroutines-extensions:2.0.1")
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
+        }
+        iosMain.dependencies {
+            implementation("app.cash.sqldelight:native-driver:2.0.1")
         }
     }
 }
@@ -93,4 +100,12 @@ dependencies {
     implementation(libs.navigation.compose)
     implementation(libs.org.jetbrains.kotlin.plugin.serialization.gradle.plugin)
     debugImplementation(libs.compose.uiTooling)
+}
+
+sqldelight {
+    databases {
+        create("NotesDatabase") {
+            packageName.set("com.example.myprofileapp.db")
+        }
+    }
 }
