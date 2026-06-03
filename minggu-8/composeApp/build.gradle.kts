@@ -50,6 +50,8 @@ kotlin {
             implementation("com.russhwolf:multiplatform-settings-no-arg:1.2.0")
             implementation("app.cash.sqldelight:runtime:2.0.1")
             implementation("app.cash.sqldelight:coroutines-extensions:2.0.1")
+            implementation("io.insert-koin:koin-core:3.5.3")
+            implementation("io.insert-koin:koin-compose:1.1.2")
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
