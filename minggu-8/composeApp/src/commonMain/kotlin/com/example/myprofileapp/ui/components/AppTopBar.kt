@@ -7,8 +7,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.DropdownMenu
@@ -48,6 +50,7 @@ fun AppTopBar(
     showSearchBar: Boolean = false,
     searchQuery: String = "",
     onSearchQueryChange: (String) -> Unit = {},
+    isNetworkConnected: Boolean = true,
 ) {
     var isSearchExpanded by remember { mutableStateOf(false) }
 
@@ -87,6 +90,13 @@ fun AppTopBar(
                 modifier = Modifier.align(Alignment.CenterEnd),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
+                NetworkStatusPill(
+                    isConnected = isNetworkConnected,
+                    colors = colors,
+                )
+
+                Spacer(modifier = Modifier.width(8.dp))
+
                 if (showSearchBar) {
                     IconButton(onClick = { isSearchExpanded = true }) {
                         Icon(
@@ -154,5 +164,36 @@ fun AppTopBar(
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun NetworkStatusPill(
+    isConnected: Boolean,
+    colors: Colors,
+) {
+    val statusText = if (isConnected) "Online" else "Offline"
+    val statusColor = if (isConnected) colors.success else colors.error
+
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier =
+            Modifier
+                .background(statusColor.copy(alpha = 0.14f), RoundedCornerShape(100))
+                .padding(horizontal = 8.dp, vertical = 4.dp),
+    ) {
+        Box(
+            modifier =
+                Modifier
+                    .size(8.dp)
+                    .background(statusColor, RoundedCornerShape(100)),
+        )
+        Spacer(modifier = Modifier.width(6.dp))
+        Text(
+            text = statusText,
+            color = statusColor,
+            fontSize = 12.sp,
+            fontWeight = FontWeight.Bold,
+        )
     }
 }
