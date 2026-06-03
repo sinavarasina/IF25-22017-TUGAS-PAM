@@ -19,19 +19,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.myprofileapp.data.news.HttpClientFactory
-import com.example.myprofileapp.data.news.NewsApi
-import com.example.myprofileapp.data.news.NewsRepository
-import com.example.myprofileapp.data.notes.NoteRepository
 import com.example.myprofileapp.data.settings.SettingsManager
 import com.example.myprofileapp.data.theme.ThemeMode
 import com.example.myprofileapp.data.theme.ThemeType
-import com.example.myprofileapp.db.NotesDatabase
+import com.example.myprofileapp.di.appModule
 import com.example.myprofileapp.navigation.Navigation
 import com.example.myprofileapp.navigation.Screen
+import com.example.myprofileapp.platform.NetworkMonitor
 import com.example.myprofileapp.ui.components.AppBottomBar
 import com.example.myprofileapp.ui.components.AppTopBar
 import com.example.myprofileapp.ui.rememberAppNavigationState
@@ -40,32 +36,25 @@ import com.example.myprofileapp.viewmodel.news.NewsViewModel
 import com.example.myprofileapp.viewmodel.notes.NotesViewModel
 import com.example.myprofileapp.viewmodel.profile.ProfileViewModel
 import com.example.myprofileapp.viewmodel.theme.ThemeViewModel
-import com.russhwolf.settings.Settings
+import org.koin.compose.KoinApplication
+import org.koin.compose.koinInject
 
 @Composable
 @Preview
 fun App() {
-    val themeViewModel: ThemeViewModel = viewModel()
-    val profileViewModel: ProfileViewModel = viewModel()
-    val settingsManager = remember { SettingsManager(Settings()) }
-    val notesViewModel: NotesViewModel =
-        viewModel {
-            val driver = createDatabaseDriver()
-            val db = NotesDatabase(driver)
-            NotesViewModel(
-                repository = NoteRepository(db),
-                settingsManager = settingsManager,
-            )
-        }
-    val newsViewModel: NewsViewModel =
-        viewModel {
-            val repository =
-                NewsRepository(
-                    api = NewsApi(HttpClientFactory.create()),
-                    settings = Settings(),
-                )
-            NewsViewModel(repository)
-        }
+    KoinApplication(application = { modules(appModule) }) {
+        AppContent()
+    }
+}
+
+@Composable
+private fun AppContent() {
+    val themeViewModel: ThemeViewModel = koinInject()
+    val profileViewModel: ProfileViewModel = koinInject()
+    val notesViewModel: NotesViewModel = koinInject()
+    val newsViewModel: NewsViewModel = koinInject()
+    val settingsManager: SettingsManager = koinInject()
+    val networkMonitor: NetworkMonitor = koinInject()
 
     LaunchedEffect(Unit) {
         themeViewModel.setThemeType(settingsManager.themeType)
@@ -78,6 +67,9 @@ fun App() {
 
     val themeState by themeViewModel.themeState.collectAsState()
     val searchQuery by notesViewModel.searchQuery.collectAsState()
+    val networkState = remember(networkMonitor) { networkMonitor.observeConnectivity() }
+    val isNetworkConnected by networkState.collectAsState(networkMonitor.isConnected())
+
     val isDark = themeState.themeMode == ThemeMode.DARK
     val currentTheme =
         when (themeState.activeThemeType) {
@@ -103,6 +95,7 @@ fun App() {
                     showSearchBar = appState.showSearchBar,
                     searchQuery = searchQuery,
                     onSearchQueryChange = { notesViewModel.setSearchQuery(it) },
+                    isNetworkConnected = isNetworkConnected,
                 )
             },
             bottomBar = {
