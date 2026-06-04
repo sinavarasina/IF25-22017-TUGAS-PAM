@@ -81,6 +81,17 @@ android {
                 .toInt()
         versionCode = 1
         versionName = "1.0"
+
+        val localProps = rootProject.file("local.properties")
+        val properties = java.util.Properties()
+        if (localProps.exists()) {
+            localProps.inputStream().use { properties.load(it) }
+        }
+        buildConfigField(
+            "String",
+            "GEMINI_API_KEY",
+            "\"${properties.getProperty("GEMINI_API_KEY", "")}\"",
+        )
     }
     packaging {
         resources {
@@ -95,6 +106,9 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
+    }
+    buildFeatures {
+        buildConfig = true
     }
 }
 
