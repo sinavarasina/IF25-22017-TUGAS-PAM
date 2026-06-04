@@ -14,38 +14,40 @@ class GeminiService(
 ) {
     private companion object {
         const val BASE_URL = "https://generativelanguage.googleapis.com/v1beta"
-        const val MODEL = "gemini-2.0-flash"
+        private const val MODEL = "gemini-2.5-flash"
     }
 
     suspend fun generateContent(
         prompt: String,
         systemPrompt: String? = null,
-    ): Result<String> = runCatching {
-        val apiKey = ApiConfig.geminiApiKey
-        require(apiKey.isNotBlank()) {
-            "Gemini API key is not configured. Add GEMINI_API_KEY to local.properties."
+    ): Result<String> =
+        runCatching {
+            val apiKey = ApiConfig.geminiApiKey
+            require(apiKey.isNotBlank()) {
+                "Gemini API key is not configured. Add GEMINI_API_KEY to local.properties."
+            }
+
+            val request =
+                GeminiRequest(
+                    contents = buildContents(prompt = prompt, systemPrompt = systemPrompt),
+                    generationConfig =
+                        GenerationConfig(
+                            temperature = 0.7,
+                            maxOutputTokens = 1000,
+                        ),
+                )
+
+            val response: GeminiResponse =
+                client
+                    .post("$BASE_URL/models/$MODEL:generateContent") {
+                        contentType(ContentType.Application.Json)
+                        parameter("key", apiKey)
+                        setBody(request)
+                    }.body()
+
+            response.getErrorMessage()?.let { errorMessage -> error(errorMessage) }
+            response.getTextContent() ?: error("Respons kosong dari AI.")
         }
-
-        val request =
-            GeminiRequest(
-                contents = buildContents(prompt = prompt, systemPrompt = systemPrompt),
-                generationConfig =
-                    GenerationConfig(
-                        temperature = 0.7,
-                        maxOutputTokens = 1000,
-                    ),
-            )
-
-        val response: GeminiResponse =
-            client.post("$BASE_URL/models/$MODEL:generateContent") {
-                contentType(ContentType.Application.Json)
-                parameter("key", apiKey)
-                setBody(request)
-            }.body()
-
-        response.getErrorMessage()?.let { errorMessage -> error(errorMessage) }
-        response.getTextContent() ?: error("Respons kosong dari AI.")
-    }
 
     private fun buildContents(
         prompt: String,
