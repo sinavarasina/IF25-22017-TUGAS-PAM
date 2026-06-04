@@ -29,6 +29,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -37,6 +38,7 @@ import com.example.myprofileapp.data.settings.SortOrder
 import com.example.myprofileapp.ui.components.notes.NoteCard
 import com.example.myprofileapp.ui.components.profile.LabeledTextField
 import com.example.myprofileapp.ui.theme.Colors
+import com.example.myprofileapp.ui.test.NotesTestTags
 import com.example.myprofileapp.viewmodel.notes.NotesViewModel
 
 @Composable
@@ -52,7 +54,7 @@ fun NoteListScreen(
 
     var isSortMenuExpanded by remember { mutableStateOf(false) }
 
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(modifier = Modifier.fillMaxSize().testTag(NotesTestTags.ListScreen)) {
         Row(
             modifier =
                 Modifier
@@ -61,7 +63,10 @@ fun NoteListScreen(
             horizontalArrangement = Arrangement.End,
         ) {
             Box {
-                TextButton(onClick = { isSortMenuExpanded = true }) {
+                TextButton(
+                    onClick = { isSortMenuExpanded = true },
+                    modifier = Modifier.testTag(NotesTestTags.SortButton),
+                ) {
                     val sortText =
                         when (sortOrder) {
                             SortOrder.DATE_DESC -> "Newest"
@@ -104,7 +109,10 @@ fun NoteListScreen(
         }
 
         if (notes.isEmpty()) {
-            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Box(
+                modifier = Modifier.fillMaxSize().testTag(NotesTestTags.EmptyState),
+                contentAlignment = Alignment.Center,
+            ) {
                 Text(
                     text = if (searchQuery.isNotBlank()) "No Result for \"$searchQuery\"" else "No Notes.",
                     color = colors.textSecondary,
@@ -112,7 +120,7 @@ fun NoteListScreen(
             }
         } else {
             LazyColumn(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier.fillMaxSize().testTag(NotesTestTags.NotesList),
                 contentPadding = PaddingValues(16.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp),
             ) {
