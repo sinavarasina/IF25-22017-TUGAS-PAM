@@ -20,7 +20,7 @@ fun AppBottomBar(
     navController: NavController,
     colors: Colors,
 ) {
-    val items = listOf(BottomNavItem.Notes, BottomNavItem.Favorites, BottomNavItem.News, BottomNavItem.Profile, BottomNavItem.Settings)
+    val items = listOf(BottomNavItem.Notes, BottomNavItem.Favorites, BottomNavItem.News, BottomNavItem.Profile, BottomNavItem.AI, BottomNavItem.Settings)
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 

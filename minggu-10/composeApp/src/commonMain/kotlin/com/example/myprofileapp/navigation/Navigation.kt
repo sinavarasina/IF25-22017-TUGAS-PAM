@@ -9,6 +9,7 @@ import androidx.navigation.toRoute
 import com.example.myprofileapp.data.settings.SettingsManager
 import com.example.myprofileapp.data.theme.ThemeMode
 import com.example.myprofileapp.data.theme.ThemeType
+import com.example.myprofileapp.ui.screens.ai.AIAssistantScreen
 import com.example.myprofileapp.ui.screens.news.NewsDetailScreen
 import com.example.myprofileapp.ui.screens.news.NewsListScreen
 import com.example.myprofileapp.ui.screens.notes.AddNoteScreen
@@ -19,6 +20,7 @@ import com.example.myprofileapp.ui.screens.notes.NoteListScreen
 import com.example.myprofileapp.ui.screens.profile.ProfileScreen
 import com.example.myprofileapp.ui.screens.settings.SettingsScreen
 import com.example.myprofileapp.ui.theme.Colors
+import com.example.myprofileapp.viewmodel.ai.AiViewModel
 import com.example.myprofileapp.viewmodel.news.NewsViewModel
 import com.example.myprofileapp.viewmodel.notes.NotesViewModel
 import com.example.myprofileapp.viewmodel.profile.ProfileViewModel
@@ -29,6 +31,7 @@ fun Navigation(
     profileViewModel: ProfileViewModel,
     notesViewModel: NotesViewModel,
     newsViewModel: NewsViewModel,
+    aiViewModel: AiViewModel,
     settingsManager: SettingsManager,
     onThemeTypeChange: (ThemeType) -> Unit,
     onThemeModeChange: (ThemeMode) -> Unit,
@@ -72,6 +75,10 @@ fun Navigation(
 
         composable<Screen.Profile> {
             ProfileScreen(profileViewModel = profileViewModel, colors = colors)
+        }
+
+        composable<Screen.AIAssistant> {
+            AIAssistantScreen(viewModel = aiViewModel, colors = colors)
         }
 
         composable<Screen.AddNote> {
