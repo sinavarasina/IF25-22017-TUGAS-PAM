@@ -1,4 +1,4 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.util.Properties
 
 val ktorVersion = "2.3.7"
 
@@ -13,6 +13,11 @@ plugins {
 
 kotlin {
     androidTarget {
+        compilations.all {
+            kotlinOptions {
+                jvmTarget = "11"
+            }
+        }
     }
 
     listOf(
@@ -83,7 +88,7 @@ android {
         versionName = "1.0"
 
         val localProps = rootProject.file("local.properties")
-        val properties = java.util.Properties()
+        val properties = Properties()
         if (localProps.exists()) {
             localProps.inputStream().use { properties.load(it) }
         }
