@@ -60,6 +60,19 @@ kotlin {
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
+            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.2")
+            implementation("app.cash.turbine:turbine:1.2.1")
+            implementation("io.insert-koin:koin-test:3.5.3")
+        }
+        androidUnitTest.dependencies {
+            implementation(libs.kotlin.test)
+            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.2")
+            implementation("io.mockk:mockk-android:1.13.9")
+        }
+        androidInstrumentedTest.dependencies {
+            implementation("androidx.test.ext:junit:1.3.0")
+            implementation("androidx.compose.ui:ui-test-junit4:1.10.0-alpha05")
+            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.2")
         }
         iosMain.dependencies {
             implementation("app.cash.sqldelight:native-driver:2.0.1")
@@ -86,6 +99,7 @@ android {
                 .toInt()
         versionCode = 1
         versionName = "1.0"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         val localProps = rootProject.file("local.properties")
         val properties = Properties()
@@ -121,6 +135,7 @@ dependencies {
     implementation(libs.navigation.compose)
     implementation(libs.org.jetbrains.kotlin.plugin.serialization.gradle.plugin)
     debugImplementation(libs.compose.uiTooling)
+    debugImplementation("androidx.compose.ui:ui-test-manifest:1.10.0-alpha05")
 }
 
 sqldelight {
