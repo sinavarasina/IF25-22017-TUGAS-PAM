@@ -8,9 +8,41 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
-class NoteRepository(
+interface NoteRepository {
+    fun getAllNotes(): Flow<List<Note>>
+
+    fun getAllNotesByTitle(): Flow<List<Note>>
+
+    fun searchNotes(query: String): Flow<List<Note>>
+
+    fun getAllNotesOldest(): Flow<List<Note>>
+
+    fun getAllNotesByTitleDesc(): Flow<List<Note>>
+
+    suspend fun getNoteById(id: Int): Note?
+
+    suspend fun insertNote(
+        title: String,
+        content: String,
+    )
+
+    suspend fun updateNote(
+        id: Int,
+        title: String,
+        content: String,
+    )
+
+    suspend fun toggleFavorite(
+        id: Int,
+        isFavorite: Boolean,
+    )
+
+    suspend fun deleteNote(id: Int)
+}
+
+class SqlDelightNoteRepository(
     private val database: NotesDatabase,
-) {
+) : NoteRepository {
     private val queries = database.noteQueries
 
     private fun com.example.myprofileapp.db.NoteEntity.toDomain() =
@@ -21,21 +53,21 @@ class NoteRepository(
             isFavorite = is_favorite == 1L,
         )
 
-    fun getAllNotes(): Flow<List<Note>> =
+    override fun getAllNotes(): Flow<List<Note>> =
         queries
             .selectAll()
             .asFlow()
             .mapToList(Dispatchers.IO)
             .map { it.map { entity -> entity.toDomain() } }
 
-    fun getAllNotesByTitle(): Flow<List<Note>> =
+    override fun getAllNotesByTitle(): Flow<List<Note>> =
         queries
             .selectAllByTitle()
             .asFlow()
             .mapToList(Dispatchers.IO)
             .map { it.map { entity -> entity.toDomain() } }
 
-    fun searchNotes(query: String): Flow<List<Note>> {
+    override fun searchNotes(query: String): Flow<List<Note>> {
         val q = "%$query%"
         return queries
             .search(q, q)
@@ -44,26 +76,26 @@ class NoteRepository(
             .map { it.map { entity -> entity.toDomain() } }
     }
 
-    fun getAllNotesOldest(): Flow<List<Note>> =
+    override fun getAllNotesOldest(): Flow<List<Note>> =
         queries
             .selectAllOldest()
             .asFlow()
             .mapToList(Dispatchers.IO)
             .map { it.map { entity -> entity.toDomain() } }
 
-    fun getAllNotesByTitleDesc(): Flow<List<Note>> =
+    override fun getAllNotesByTitleDesc(): Flow<List<Note>> =
         queries
             .selectAllByTitleDesc()
             .asFlow()
             .mapToList(Dispatchers.IO)
             .map { it.map { entity -> entity.toDomain() } }
 
-    suspend fun getNoteById(id: Int): Note? =
+    override suspend fun getNoteById(id: Int): Note? =
         withContext(Dispatchers.IO) {
             queries.selectById(id.toLong()).executeAsOneOrNull()?.toDomain()
         }
 
-    suspend fun insertNote(
+    override suspend fun insertNote(
         title: String,
         content: String,
     ) {
@@ -73,7 +105,7 @@ class NoteRepository(
         }
     }
 
-    suspend fun updateNote(
+    override suspend fun updateNote(
         id: Int,
         title: String,
         content: String,
@@ -84,7 +116,7 @@ class NoteRepository(
         }
     }
 
-    suspend fun toggleFavorite(
+    override suspend fun toggleFavorite(
         id: Int,
         isFavorite: Boolean,
     ) {
@@ -98,7 +130,7 @@ class NoteRepository(
         }
     }
 
-    suspend fun deleteNote(id: Int) {
+    override suspend fun deleteNote(id: Int) {
         withContext(Dispatchers.IO) {
             queries.delete(id.toLong())
         }
