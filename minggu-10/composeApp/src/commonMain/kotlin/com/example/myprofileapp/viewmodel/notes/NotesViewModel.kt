@@ -6,6 +6,7 @@ import com.example.myprofileapp.data.notes.Note
 import com.example.myprofileapp.data.notes.NoteRepository
 import com.example.myprofileapp.data.settings.SettingsManager
 import com.example.myprofileapp.data.settings.SortOrder
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -18,7 +19,9 @@ import kotlinx.coroutines.launch
 class NotesViewModel(
     private val repository: NoteRepository,
     private val settingsManager: SettingsManager,
+    coroutineScope: CoroutineScope? = null,
 ) : ViewModel() {
+    private val scope = coroutineScope ?: viewModelScope
     private val _searchQuery = MutableStateFlow("")
     val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
 
@@ -38,7 +41,7 @@ class NotesViewModel(
                         SortOrder.DATE_ASC -> repository.getAllNotesOldest()
                     }
                 }
-            }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+            }.stateIn(scope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     fun setSearchQuery(query: String) {
         _searchQuery.value = query
@@ -53,7 +56,7 @@ class NotesViewModel(
         title: String,
         content: String,
     ) {
-        viewModelScope.launch { repository.insertNote(title, content) }
+        scope.launch { repository.insertNote(title, content) }
     }
 
     fun updateNote(
@@ -61,18 +64,18 @@ class NotesViewModel(
         title: String,
         content: String,
     ) {
-        viewModelScope.launch { repository.updateNote(id, title, content) }
+        scope.launch { repository.updateNote(id, title, content) }
     }
 
     fun toggleFavorite(id: Int) {
-        viewModelScope.launch {
+        scope.launch {
             val note = notes.value.find { it.id == id } ?: return@launch
             repository.toggleFavorite(id, note.isFavorite)
         }
     }
 
     fun deleteNote(id: Int) {
-        viewModelScope.launch { repository.deleteNote(id) }
+        scope.launch { repository.deleteNote(id) }
     }
 
     fun getNoteById(id: Int): Note? = notes.value.find { it.id == id }
