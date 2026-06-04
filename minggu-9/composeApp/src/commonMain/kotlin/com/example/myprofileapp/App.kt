@@ -32,6 +32,7 @@ import com.example.myprofileapp.ui.components.AppBottomBar
 import com.example.myprofileapp.ui.components.AppTopBar
 import com.example.myprofileapp.ui.rememberAppNavigationState
 import com.example.myprofileapp.ui.theme.Themes
+import com.example.myprofileapp.viewmodel.ai.AiViewModel
 import com.example.myprofileapp.viewmodel.news.NewsViewModel
 import com.example.myprofileapp.viewmodel.notes.NotesViewModel
 import com.example.myprofileapp.viewmodel.profile.ProfileViewModel
@@ -53,6 +54,7 @@ private fun AppContent() {
     val profileViewModel: ProfileViewModel = koinInject()
     val notesViewModel: NotesViewModel = koinInject()
     val newsViewModel: NewsViewModel = koinInject()
+    val aiViewModel: AiViewModel = koinInject()
     val settingsManager: SettingsManager = koinInject()
     val networkMonitor: NetworkMonitor = koinInject()
 
@@ -125,6 +127,7 @@ private fun AppContent() {
                 profileViewModel = profileViewModel,
                 notesViewModel = notesViewModel,
                 newsViewModel = newsViewModel,
+                aiViewModel = aiViewModel,
                 settingsManager = settingsManager,
                 onThemeTypeChange = { themeViewModel.setThemeType(it) },
                 onThemeModeChange = { themeViewModel.setThemeMode(it) },

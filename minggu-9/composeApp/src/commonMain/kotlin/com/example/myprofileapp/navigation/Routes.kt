@@ -13,6 +13,8 @@ sealed interface Screen {
 
     @Serializable data object Settings : Screen
 
+    @Serializable data object AIAssistant : Screen
+
     @Serializable data object AddNote : Screen
 
     @Serializable data class NoteDetail(

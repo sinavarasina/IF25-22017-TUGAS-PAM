@@ -24,6 +24,7 @@ fun rememberAppNavigationState(currentDestination: NavDestination?): AppNavState
                         it.hasRoute<Screen.Notes>() ||
                         it.hasRoute<Screen.Favorites>() ||
                         it.hasRoute<Screen.Profile>() ||
+                        it.hasRoute<Screen.AIAssistant>() ||
                         it.hasRoute<Screen.Settings>()
                 } == true,
             showFab = currentDestination?.hasRoute<Screen.Notes>() == true,
@@ -35,6 +36,7 @@ fun rememberAppNavigationState(currentDestination: NavDestination?): AppNavState
                     currentDestination?.hasRoute<Screen.Notes>() == true -> "Notes"
                     currentDestination?.hasRoute<Screen.Favorites>() == true -> "Favorites"
                     currentDestination?.hasRoute<Screen.Profile>() == true -> "Profile"
+                    currentDestination?.hasRoute<Screen.AIAssistant>() == true -> "AI Assistant"
                     currentDestination?.hasRoute<Screen.AddNote>() == true -> "Add Note"
                     currentDestination?.hasRoute<Screen.NoteDetail>() == true -> "Note Detail"
                     currentDestination?.hasRoute<Screen.EditNote>() == true -> "Edit Note"

@@ -1,6 +1,7 @@
 package com.example.myprofileapp.navigation
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Person
@@ -20,6 +21,8 @@ sealed class BottomNavItem(
     object Favorites : BottomNavItem(Screen.Favorites, Icons.Default.Favorite, "Favorites")
 
     object Profile : BottomNavItem(Screen.Profile, Icons.Default.Person, "Profile")
+
+    object AI : BottomNavItem(Screen.AIAssistant, Icons.Default.AutoAwesome, "AI")
 
     object Settings : BottomNavItem(Screen.Settings, Icons.Default.Settings, "Settings")
 }
