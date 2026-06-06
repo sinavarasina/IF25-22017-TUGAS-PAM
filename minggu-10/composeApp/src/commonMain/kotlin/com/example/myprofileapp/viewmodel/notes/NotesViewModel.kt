@@ -55,28 +55,21 @@ class NotesViewModel(
     fun addNote(
         title: String,
         content: String,
-    ) {
-        scope.launch { repository.insertNote(title, content) }
-    }
+    ) = scope.launch { repository.insertNote(title, content) }
 
     fun updateNote(
         id: Int,
         title: String,
         content: String,
-    ) {
-        scope.launch { repository.updateNote(id, title, content) }
-    }
+    ) = scope.launch { repository.updateNote(id, title, content) }
 
-    fun toggleFavorite(id: Int) {
+    fun toggleFavorite(id: Int) =
         scope.launch {
             val note = notes.value.find { it.id == id } ?: return@launch
             repository.toggleFavorite(id, note.isFavorite)
         }
-    }
 
-    fun deleteNote(id: Int) {
-        scope.launch { repository.deleteNote(id) }
-    }
+    fun deleteNote(id: Int) = scope.launch { repository.deleteNote(id) }
 
     fun getNoteById(id: Int): Note? = notes.value.find { it.id == id }
 }

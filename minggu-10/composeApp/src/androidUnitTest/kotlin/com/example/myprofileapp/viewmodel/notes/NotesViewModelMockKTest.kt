@@ -38,8 +38,7 @@ class NotesViewModelMockKTest {
         coEvery { repository.insertNote(any(), any()) } just Runs
         val viewModel = createViewModel()
 
-        viewModel.addNote("Title", "Content")
-        testScheduler.advanceUntilIdle()
+        viewModel.addNote("Title", "Content").join()
 
         coVerify(exactly = 1) { repository.insertNote("Title", "Content") }
     }
@@ -49,8 +48,7 @@ class NotesViewModelMockKTest {
         coEvery { repository.updateNote(any(), any(), any()) } just Runs
         val viewModel = createViewModel()
 
-        viewModel.updateNote(7, "Updated", "Updated content")
-        testScheduler.advanceUntilIdle()
+        viewModel.updateNote(7, "Updated", "Updated content").join()
 
         coVerify(exactly = 1) { repository.updateNote(7, "Updated", "Updated content") }
     }
@@ -60,8 +58,7 @@ class NotesViewModelMockKTest {
         coEvery { repository.deleteNote(any()) } just Runs
         val viewModel = createViewModel()
 
-        viewModel.deleteNote(3)
-        testScheduler.advanceUntilIdle()
+        viewModel.deleteNote(3).join()
 
         coVerify(exactly = 1) { repository.deleteNote(3) }
     }
@@ -80,6 +77,6 @@ class NotesViewModelMockKTest {
         NotesViewModel(
             repository = repository,
             settingsManager = settingsManager,
-            coroutineScope = this,
+            coroutineScope = backgroundScope,
         )
 }

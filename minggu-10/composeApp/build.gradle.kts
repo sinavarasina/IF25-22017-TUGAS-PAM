@@ -60,14 +60,15 @@ kotlin {
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
-            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.2")
+            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.9.0")
             implementation("app.cash.turbine:turbine:1.2.1")
             implementation("io.insert-koin:koin-test:3.5.3")
+            implementation("com.russhwolf:multiplatform-settings-test:1.2.0")
         }
         val androidUnitTest by getting {
             dependencies {
                 implementation(libs.kotlin.test)
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.2")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.9.0")
                 implementation("io.mockk:mockk-android:1.13.9")
             }
         }
@@ -75,8 +76,11 @@ kotlin {
         val androidInstrumentedTest by getting {
             dependencies {
                 implementation("androidx.test.ext:junit:1.3.0")
-                implementation("androidx.compose.ui:ui-test-junit4:1.10.0-alpha05")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.2")
+                implementation("androidx.test:runner:1.7.0")
+                implementation("androidx.test:core:1.7.0")
+                implementation("androidx.test.espresso:espresso-core:3.7.0")
+                implementation("androidx.compose.ui:ui-test-junit4:1.9.0")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.9.0")
             }
         }
         iosMain.dependencies {
@@ -123,6 +127,10 @@ android {
         }
     }
     buildTypes {
+        getByName("debug") {
+            enableUnitTestCoverage = true
+            enableAndroidTestCoverage = true
+        }
         getByName("release") {
             isMinifyEnabled = false
         }
@@ -140,7 +148,7 @@ dependencies {
     implementation(libs.navigation.compose)
     implementation(libs.org.jetbrains.kotlin.plugin.serialization.gradle.plugin)
     debugImplementation(libs.compose.uiTooling)
-    debugImplementation("androidx.compose.ui:ui-test-manifest:1.10.0-alpha05")
+    debugImplementation("androidx.compose.ui:ui-test-manifest:1.9.0")
 }
 
 sqldelight {

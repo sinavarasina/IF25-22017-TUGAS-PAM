@@ -5,7 +5,7 @@ import com.example.myprofileapp.data.settings.SettingsManager
 import com.example.myprofileapp.data.settings.SortOrder
 import com.example.myprofileapp.testutil.FakeNoteRepository
 import com.example.myprofileapp.testutil.testNote
-import com.russhwolf.settings.Settings
+import com.russhwolf.settings.MapSettings
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.TestScope
@@ -27,7 +27,7 @@ class NotesViewModelTest {
 
     @Test
     fun `setSortOrder updates and persists sort order`() = runTest {
-        val settingsManager = SettingsManager(Settings())
+        val settingsManager = SettingsManager(MapSettings())
         val viewModel = createViewModel(repository = FakeNoteRepository(), settingsManager = settingsManager)
 
         viewModel.setSortOrder(SortOrder.TITLE_ASC)
@@ -128,11 +128,11 @@ class NotesViewModelTest {
 
     private fun TestScope.createViewModel(
         repository: FakeNoteRepository,
-        settingsManager: SettingsManager = SettingsManager(Settings()),
+        settingsManager: SettingsManager = SettingsManager(MapSettings()),
     ): NotesViewModel =
         NotesViewModel(
             repository = repository,
             settingsManager = settingsManager,
-            coroutineScope = this,
+            coroutineScope = backgroundScope,
         )
 }
